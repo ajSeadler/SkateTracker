@@ -26,7 +26,7 @@ const AllGuitars = () => {
 
   return (
     <div className="container">
-      <h1 className="title">Music Shop</h1>
+      <h1 className="title">Guitars</h1>
       <div className="product-list">
         {products.map(product => (
           <div key={product.product_id} className="product">
