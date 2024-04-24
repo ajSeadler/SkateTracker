@@ -8,6 +8,7 @@ const initialData = {
       price: 2299.99,
       stock_quantity: 5,
       image_url: 'https://images.ctfassets.net/m8onsx4mm13s/5TnbfQFGO7YuWFnFyvuMFd/2cf389894ef5f3ddf41bd084d8ba981d/__static.gibson.com_product-images_USA_USA1R6524_Bourbon_Burst_LPS619B8NH1_1.jpg?w=1200&h=1200'
+      
     },
     {
       name: 'Fender Stratocaster',

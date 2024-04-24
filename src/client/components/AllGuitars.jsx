@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Login from './Login';
 import { Rating } from '@mui/material'; // Import Rating component
 import StarIcon from '@mui/icons-material/Star'; // Import StarIcon from MUI icons
 import StarBorderIcon from '@mui/icons-material/StarBorder'; // Import StarBorderIcon from MUI icons
@@ -53,7 +52,6 @@ const AllGuitars = () => {
           </div>
         ))}
       </div>
-      <Login />
     </div>
   );
 };

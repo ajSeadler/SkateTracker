@@ -69,6 +69,7 @@ const createTables = async () => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+      
 
       CREATE TABLE orders (
         order_id SERIAL PRIMARY KEY,

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import Login from './Login';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -26,20 +25,28 @@ const Home = () => {
   }, []);
 
   return (
-    <div className="container">
-      <h1 className='sub-title'>Our Top Picks</h1>
-      <div className="product-list">
-        {products.map(product => (
-          <div key={product.name} className="product">
-            <img className="product-image" src={product.image_url} alt={product.name} />
-            <h2 className="product-name">{product.name}</h2>
-            <p className="product-description">{product.description}</p>
-            <p className="product-price">${product.price}</p>
-            <button className="add-to-cart-button">Add to Cart</button>
-          </div>
-        ))}
+    <div className="home">
+      {/* <div className="hero-section">
+        <img
+          className="hero-background"
+          src="https://www.rollingstone.com/wp-content/uploads/2024/04/Phish-Sphere-1-Fury.jpg?w=1600&h=900&crop=1"
+          alt="Hero Background"
+        />
+      </div> */}
+      <div className="container">
+        <h2 className='sub-title'>Our Top Picks</h2>
+        <div className="product-list">
+          {products.map(product => (
+            <div key={product.name} className="product">
+              <img className="product-image" src={product.image_url} alt={product.name} />
+              <h2 className="product-name">{product.name}</h2>
+              <p className="product-description">{product.description}</p>
+              <p className="product-price">${product.price}</p>
+              <button className="add-to-cart-button">Add to Cart</button>
+            </div>
+          ))}
+        </div>
       </div>
-      <Login />
     </div>
   );
 };

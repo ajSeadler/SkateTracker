@@ -59,7 +59,7 @@ function NavigationBar() {
         <ListItemText primary="Amplifiers" />
       </ListItem>
       <ListItem button component={Link} to="/pedals-and-effects" onClick={handleDrawerToggle}>
-        <ListItemText primary="Pedals and Effects" />
+        <ListItemText primary="Pedals" />
       </ListItem>
       <ListItem button component={Link} to="/accessories" onClick={handleDrawerToggle}>
         <ListItemText primary="Accessories" />
@@ -92,7 +92,7 @@ function NavigationBar() {
         <ListItemText primary="Amplifiers" />
       </ListItem>
             <ListItem button component={Link} to="/pedals-and-effects">
-              <ListItemText primary="Pedals and Effects" />
+              <ListItemText primary="Pedals" />
             </ListItem>
             <ListItem button component={Link} to="/accessories">
               <ListItemText primary="Accessories" />

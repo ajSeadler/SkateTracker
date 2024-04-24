@@ -20,5 +20,28 @@ const getAllProducts = async () => {
   }
 };
 
+const getProductsByBrand = async (brand) => {
+  try {
+    const query = `
+      SELECT 
+        p.*,
+        AVG(r.rating) AS rating
+      FROM 
+        products p
+      LEFT JOIN 
+        reviews r ON p.product_id = r.product_id
+      WHERE 
+        p.brand = $1
+      GROUP BY 
+        p.product_id;
+    `;
+    const { rows } = await db.query(query, [brand]);
+    return rows;
+  } catch (error) {
+    throw error;
+  }
+};
 
-module.exports = getAllProducts;
+
+module.exports = getAllProducts
+getProductsByBrand;
