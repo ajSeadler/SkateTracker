@@ -48,6 +48,9 @@ apiRouter.use((req, res, next) => {
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
+const productsRouter = require("./products");
+apiRouter.use("/products", productsRouter);
+
 // add in other routes like above
 
 
