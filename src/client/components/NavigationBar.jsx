@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { IconButton, InputBase } from '@mui/material';
-import { Search, Person, ShoppingCart } from '@mui/icons-material';
+import { Search, Person, ShoppingCart, ExitToApp } from '@mui/icons-material';
 
 function NavigationBar() {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('token');
+    navigate('/');
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -16,7 +23,7 @@ function NavigationBar() {
         <div className="nav-container" style={{ display: 'flex', alignItems: 'center' }}>
           {/* Logo */}
           <div className="brand">
-           <Link to="/" > <img src="/guitar-xxl.png" alt="Music Shop" className="logo-image" style={{ width: '60px', marginBottom: '10px', marginRight: '20px', margin:'10px' }} /> </Link>
+            <Link to="/" ><img src="/guitar-xxl.png" alt="Music Shop" className="logo-image" style={{ width: '60px', marginBottom: '10px', marginRight: '20px', margin:'10px' }} /></Link>
           </div>
           {/* Menu */}
           <div className="menu">
@@ -41,16 +48,32 @@ function NavigationBar() {
             </ul>
           </div>
         </div>
-        {/* Search Bar, Person Icon, and Shopping Cart Icon */}
+        {/* Search Bar, Login/Profile Icon, and Shopping Cart Icon */}
         <div style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}>
           <InputBase
             placeholder="Search…"
             style={{ marginRight: '0px', color: '#000', backgroundColor:'#fff', borderRadius:'20px', padding:'7px' }}
             inputProps={{ 'aria-label': 'search' }}
           />
-          <Link to='/me'><IconButton color="inherit">
-            <Person  style={{color:'#fff',}}/>
-          </IconButton> </Link>
+          {/* Conditionally render login icon, profile icon, or logout button */}
+          {token ? (
+            <>
+              <Link to='/me'>
+                <IconButton color="inherit">
+                  <Person style={{ color: '#fff' }} />
+                </IconButton>
+              </Link>
+              <IconButton color="inherit" onClick={handleLogout}>
+                <ExitToApp />
+              </IconButton>
+            </>
+          ) : (
+            <Link to='/login'>
+              <IconButton color="inherit">
+                <Person style={{ color: '#fff' }} />
+              </IconButton>
+            </Link>
+          )}
           <IconButton color="inherit">
             <ShoppingCart />
           </IconButton>

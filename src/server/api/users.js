@@ -81,28 +81,11 @@ usersRouter.post("/login", async (req, res, next) => {
   }
 });
 
-usersRouter.get("/:id", async (req, res, next) => {
-  try {
-    const userId = req.params.id;
-    const user = await getUserById(userId);
 
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.send({
-      user,
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// ROute for the logged in users profile
 usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
     
-    console.log("User profile:",req.user);
+    console.log("User profile:",req.user, req.user.id);
     res.send(req.user);
   } catch (error) {
     next(error);

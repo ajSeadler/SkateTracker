@@ -25,8 +25,6 @@ const users = [
   }
 ];
 
-
-
 const dropTables = async () => {
   try {
     // Drop tables with CASCADE option to drop dependent objects
@@ -40,7 +38,7 @@ const createTables = async () => {
   try {
     await db.query(`
       CREATE TABLE users (
-        user_id SERIAL PRIMARY KEY,
+        id SERIAL PRIMARY KEY,
         name VARCHAR(255) UNIQUE,
         email VARCHAR(255) UNIQUE,
         password VARCHAR(255) NOT NULL,
@@ -74,7 +72,7 @@ const createTables = async () => {
       
       CREATE TABLE orders (
         order_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(user_id),
+        user_id INTEGER REFERENCES users(id),
         order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         total_price DECIMAL,
         status VARCHAR(50),
@@ -95,7 +93,7 @@ const createTables = async () => {
       CREATE TABLE reviews (
         review_id SERIAL PRIMARY KEY,
         product_id INTEGER REFERENCES products(product_id),
-        user_id INTEGER REFERENCES users(user_id),
+        user_id INTEGER REFERENCES users(id),
         rating INTEGER,
         comment TEXT,
         review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -105,7 +103,7 @@ const createTables = async () => {
 
       CREATE TABLE wishlists (
         wishlist_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(user_id),
+        user_id INTEGER REFERENCES users(id),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );

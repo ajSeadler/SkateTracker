@@ -36,12 +36,26 @@ const getUserByEmail = async (email) => {
 };
 
 const getUserById = async (userId) => {
-  try {
-    const { rows } = await db.query('SELECT * FROM users WHERE user_id = $1', [userId]);
-    return rows[0]; // Assuming user_id is unique, return the first row
-  } catch (error) {
-    throw error;
-  }
+    try {
+        const { rows: [user] } = await db.query(
+            `
+        SELECT *
+        FROM users
+        WHERE id = $1;
+        `,
+            [userId]
+        );
+
+        if (!user) return null;
+
+        // Omitting password from the user object
+        const sanitizedUser = { ...user };
+        delete sanitizedUser.password;
+
+        return sanitizedUser;
+    } catch (error) {
+        throw error;
+    }
 };
 
 
