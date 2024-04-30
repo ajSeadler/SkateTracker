@@ -1,118 +1,88 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import AppBar from '@mui/material/AppBar';
-import Toolbar from '@mui/material/Toolbar';
-import Typography from '@mui/material/Typography';
-import IconButton from '@mui/material/IconButton';
-import MenuIcon from '@mui/icons-material/Menu';
-import Drawer from '@mui/material/Drawer';
-import List from '@mui/material/List';
-import ListItem from '@mui/material/ListItem';
-import ListItemText from '@mui/material/ListItemText';
-import { styled } from '@mui/material/styles';
-
-const StyledAppBar = styled(AppBar)(({ scrolled }) => ({
-  backgroundColor: scrolled ? '#000' : 'transparent',
-  color: scrolled ? '#fff' : '#000',
-  transition: 'background-color 0.3s ease, color 0.3s ease',
-}));
-
-const StyledTypography = styled(Typography)(({ theme }) => ({
-  textDecoration: 'none',
-  color: 'inherit',
-  flexGrow: 1,
-  fontWeight:'bolder'
-}));
-
-
+import { IconButton, InputBase } from '@mui/material';
+import { Search, Person, ShoppingCart } from '@mui/icons-material';
 
 function NavigationBar() {
-  const [scrollPosition, setScrollPosition] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const position = window.pageYOffset;
-      setScrollPosition(position);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const scrolled = scrollPosition > 0;
-
-  const drawerContent = (
-    <List>
-      <ListItem button component={Link} to="/" onClick={handleDrawerToggle}>
-        <ListItemText primary="Home" />
-      </ListItem>
-      <ListItem button component={Link} to="/guitars" onClick={handleDrawerToggle}>
-        <ListItemText primary="Guitars" />
-      </ListItem>
-      <ListItem button component={Link} to="/amps" onClick={handleDrawerToggle}>
-        <ListItemText primary="Amplifiers" />
-      </ListItem>
-      <ListItem button component={Link} to="/pedals-and-effects" onClick={handleDrawerToggle}>
-        <ListItemText primary="Pedals" />
-      </ListItem>
-      <ListItem button component={Link} to="/accessories" onClick={handleDrawerToggle}>
-        <ListItemText primary="Accessories" />
-      </ListItem>
-      {/* Add more links as needed */}
-    </List>
-  );
-
   return (
     <>
-      <StyledAppBar position="fixed" scrolled={scrolled}>
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }} // Hide on medium and up
-          >
-            <MenuIcon />
+      <nav className="navbar" style={{ backgroundColor: 'black', color: '#fff', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="nav-container" style={{ display: 'flex', alignItems: 'center' }}>
+          {/* Logo */}
+          <div className="brand">
+           <Link to="/" > <img src="/guitar-xxl.png" alt="Music Shop" className="logo-image" style={{ width: '60px', marginBottom: '10px', marginRight: '20px', margin:'10px' }} /> </Link>
+          </div>
+          {/* Menu */}
+          <div className="menu">
+            <ul className="menu-list" style={{ textAlign: 'center', margin: '0', padding: '0' }}>
+              <li className="menu-item">
+                <Link to="/electric-guitars" className="menu-link">Guitars</Link>
+                <div className="dropdown">
+                  <Link to="/electric-guitars" className="dropdown-link">Electric Guitars</Link>
+                  <Link to="/acoustic-guitars" className="dropdown-link">Acoustic Guitars</Link>
+                  <Link to="/bass-guitars" className="dropdown-link">Bass Guitars</Link>
+                </div>
+              </li>
+              <li className="menu-item">
+                <Link to="/amps" className="menu-link">Amplifiers</Link>
+              </li>
+              <li className="menu-item">
+                <Link to="/pedals-and-effects" className="menu-link">Pedals</Link>
+              </li>
+              <li className="menu-item">
+                <Link to="/accessories" className="menu-link">Accessories</Link>
+              </li>
+            </ul>
+          </div>
+        </div>
+        {/* Search Bar, Person Icon, and Shopping Cart Icon */}
+        <div style={{ display: 'flex', alignItems: 'center', marginRight: '20px' }}>
+          <InputBase
+            placeholder="Search…"
+            style={{ marginRight: '0px', color: '#000', backgroundColor:'#fff', borderRadius:'20px', padding:'7px' }}
+            inputProps={{ 'aria-label': 'search' }}
+          />
+          <Link to='/me'><IconButton color="inherit">
+            <Person  style={{color:'#fff',}}/>
+          </IconButton> </Link>
+          <IconButton color="inherit">
+            <ShoppingCart />
           </IconButton>
-          <StyledTypography variant="h6" component={Link} to="/">
-            Music Shop
-          </StyledTypography>
-          <List sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <ListItem button component={Link} to="/guitars">
-              <ListItemText primary="Guitars" />
-            </ListItem>
-            <ListItem button component={Link} to="/amps" >
-        <ListItemText primary="Amplifiers" />
-      </ListItem>
-            <ListItem button component={Link} to="/pedals-and-effects">
-              <ListItemText primary="Pedals" />
-            </ListItem>
-            <ListItem button component={Link} to="/accessories">
-              <ListItemText primary="Accessories" />
-            </ListItem>
-            {/* Add more links as needed */}
-          </List>
-        </Toolbar>
-      </StyledAppBar>
-      <Drawer
-        anchor="left"
-        open={mobileOpen}
-        onClose={handleDrawerToggle}
-        variant="temporary"
-        sx={{
-          '& .MuiDrawer-paper': { boxSizing: 'border-box', width: 240 },
-          display: { xs: 'block', md: 'none' }, // Show only on xs (extra-small) screens
-        }}
-      >
-        {drawerContent}
-      </Drawer>
+        </div>
+        {/* Mobile Toggle Button */}
+        <button className="menu-toggle" onClick={handleDrawerToggle} style={{ display: 'none' }}>
+          <i className="fas fa-bars"></i>
+        </button>
+      </nav>
+      {mobileOpen && (
+        <div className="mobile-menu">
+          <ul className="mobile-menu-list">
+            <li className="menu-item">
+              <Link to="/guitars" className="menu-link">Guitars</Link>
+              <div className="dropdown">
+                <Link to="/electric-guitars" className="dropdown-link">Electric Guitars</Link>
+                <Link to="/acoustic-guitars" className="dropdown-link">Acoustic Guitars</Link>
+                <Link to="/bass-guitars" className="dropdown-link">Bass Guitars</Link>
+              </div>
+            </li>
+            <li className="menu-item">
+              <Link to="/amps" className="menu-link">Amplifiers</Link>
+            </li>
+            <li className="menu-item">
+              <Link to="/pedals-and-effects" className="menu-link">Pedals</Link>
+            </li>
+            <li className="menu-item">
+              <Link to="/accessories" className="menu-link">Accessories</Link>
+            </li>
+          </ul>
+        </div>
+      )}
     </>
   );
 }

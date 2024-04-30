@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from 'react';
-import { Rating } from '@mui/material'; // Import Rating component
-import StarIcon from '@mui/icons-material/Star'; // Import StarIcon from MUI icons
-import StarBorderIcon from '@mui/icons-material/StarBorder'; // Import StarBorderIcon from MUI icons
+import { Link } from 'react-router-dom';
+import { Rating } from '@mui/material';
+import StarIcon from '@mui/icons-material/Star';
+import StarBorderIcon from '@mui/icons-material/StarBorder';
+import ScrollTrigger from 'react-scroll-trigger';
 
 const AllGuitars = () => {
   const [products, setProducts] = useState([]);
+  const [animatedItems, setAnimatedItems] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -23,33 +26,37 @@ const AllGuitars = () => {
     fetchProducts();
   }, []);
 
+  const handleScrollAnimation = index => {
+    setAnimatedItems(prevState => [...prevState, index]);
+  };
+
   return (
     <div className="container">
-      <h1 className="title">Music Shop</h1>
+      <h1 className="title">All Guitars</h1>
       <div className="product-list">
-        {products.map(product => (
-          <div key={product.product_id} className="product">
-            <img className="product-image" src={product.image_url} alt={product.name} />
-            <h2 className="product-name">{product.name}</h2>
-            <p className="product-description">{product.description}</p>
-            <p className="product-price">${product.price}</p>
-            {/* Conditionally render Rating component only if there is a rating */}
-            {product.rating && (
-              <div>
-                <Rating
-                  name="product-rating"
-                  value={product.rating}
-                  precision={0.5}
-                  readOnly
-                  emptyIcon={<StarBorderIcon style={{ color: 'gold' }} />} // Set empty star color
-                  icon={<StarIcon style={{ color: 'gold' }} />} // Set filled star color
-                />
-                {/* Log the rating */}
-                {console.log('Rating:', product.rating)}
-              </div>
-            )}
-            <button className="add-to-cart-button">Add to Cart</button>
-          </div>
+        {products.map((product, index) => (
+          <ScrollTrigger key={product.product_id} onEnter={() => handleScrollAnimation(index)}>
+            <div className={`product ${animatedItems.includes(index) ? 'animate' : ''}`}>
+              <Link to={`/products/${product.product_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+                <img className="product-image" src={product.image_url} alt={product.name} />
+                <p className="product-name">{product.name}</p>
+                {product.rating && (
+                  <div>
+                    <Rating
+                      name="product-rating"
+                      value={product.rating}
+                      precision={0.5}
+                      readOnly
+                      emptyIcon={<StarBorderIcon style={{ color: 'gold' }} />}
+                      icon={<StarIcon style={{ color: 'gold' }} />}
+                    />
+                  </div>
+                )}
+                <p className="product-price">${product.price}</p>
+                <button className="add-to-cart-button">Add to Cart</button>
+              </Link>
+            </div>
+          </ScrollTrigger>
         ))}
       </div>
     </div>

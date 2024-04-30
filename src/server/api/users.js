@@ -6,9 +6,6 @@ const {
   getUser,
   getUserByEmail,
   getUserById,
-  updateUserEmail,
-  updateUserName,
-  updateUserPassword
 } = require("../db");
 const { requireUser } = require("./utils");
 const { JWT_SECRET = "somesecretvalue" } = process.env;
@@ -27,6 +24,23 @@ usersRouter.get("/", async (req, res, next) => {
     next({ name, message });
   }
 });
+//NEED TO FIX THIS ROUTE. PROFILE PAGE WORKS WITHOUT IT BUT NOT WITH IT
+// usersRouter.get("/:id", async (req, res, next) => {
+//   try {
+//     const userId = req.params.id;
+//     const user = await getUserById(userId); //error is here
+
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     res.send({
+//       user,
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// });
 
 usersRouter.post("/login", async (req, res, next) => {
   const { email, password } = req.body;
@@ -67,11 +81,28 @@ usersRouter.post("/login", async (req, res, next) => {
   }
 });
 
+usersRouter.get("/:id", async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await getUserById(userId);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    res.send({
+      user,
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // ROute for the logged in users profile
 usersRouter.get("/me", requireUser, async (req, res, next) => {
   try {
     
-    console.log("User profile:",req.user, req.user.id);
+    console.log("User profile:",req.user);
     res.send(req.user);
   } catch (error) {
     next(error);
@@ -121,52 +152,4 @@ usersRouter.post("/register", async (req, res, next) => {
   }
 });
 
-usersRouter.patch("/:userId/email", requireUser, async (req, res, next) => {
-  const { userId } = req.params;
-  const { newEmail } = req.body;
-
-  try {
-    const updatedUser = await updateUserEmail(userId, newEmail);
-    res.send({
-      message: "User email updated successfully",
-      user: updatedUser
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Route to update user name
-usersRouter.patch("/:userId/name", requireUser, async (req, res, next) => {
-  const { userId } = req.params;
-  const { newName } = req.body;
-
-  try {
-    const updatedUser = await updateUserName(userId, newName);
-    res.send({
-      message: "User name updated successfully",
-      user: updatedUser
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
-// Route to update user password
-usersRouter.patch("/:userId/password", requireUser, async (req, res, next) => {
-  const { userId } = req.params;
-  const { newPassword } = req.body;
-
-  try {
-    const updatedUser = await updateUserPassword(userId, newPassword);
-    res.send({
-      message: "User password updated successfully",
-      user: updatedUser
-    });
-  } catch (error) {
-    next(error);
-  }
-});
-
 module.exports = usersRouter;
-
