@@ -1,10 +1,10 @@
 const db = require('./client');
-const initialData = require('./dummyData');
 const { createUser } = require("./users");
+const initialData = require("./seedData");
 
 const users = [
   {
-    username: 'ajseadler',
+    name: 'ajseadler',
     email: 'aj@a.com',
     password: 'pass',
     first_name:'AJ',
@@ -14,7 +14,7 @@ const users = [
     billing_address: '123 main st',
   },
   {
-    username: 'tonysoprano',
+    name: 'tonysoprano',
     email: 'tonE@a.com',
     password: 'pass',
     first_name:'Tony',
@@ -28,7 +28,7 @@ const users = [
 const dropTables = async () => {
   try {
     // Drop tables with CASCADE option to drop dependent objects
-    await db.query('DROP TABLE IF EXISTS order_items, orders, reviews, wishlist_items, wishlists, users, products, categories CASCADE;');
+    await db.query('DROP TABLE IF EXISTS order_items, orders, reviews, wishlist_items, wishlists, users, products, categories, product_categories CASCADE;');
   } catch (error) {
     throw error;
   }
@@ -38,8 +38,8 @@ const createTables = async () => {
   try {
     await db.query(`
       CREATE TABLE users (
-        user_id SERIAL PRIMARY KEY,
-        username VARCHAR(255) UNIQUE,
+        id SERIAL PRIMARY KEY,
+        name VARCHAR(255) UNIQUE,
         email VARCHAR(255) UNIQUE,
         password VARCHAR(255) NOT NULL,
         first_name VARCHAR(255),
@@ -70,10 +70,9 @@ const createTables = async () => {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
       
-
       CREATE TABLE orders (
         order_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(user_id),
+        user_id INTEGER REFERENCES users(id),
         order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         total_price DECIMAL,
         status VARCHAR(50),
@@ -94,7 +93,7 @@ const createTables = async () => {
       CREATE TABLE reviews (
         review_id SERIAL PRIMARY KEY,
         product_id INTEGER REFERENCES products(product_id),
-        user_id INTEGER REFERENCES users(user_id),
+        user_id INTEGER REFERENCES users(id),
         rating INTEGER,
         comment TEXT,
         review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -104,7 +103,7 @@ const createTables = async () => {
 
       CREATE TABLE wishlists (
         wishlist_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(user_id),
+        user_id INTEGER REFERENCES users(id),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -116,6 +115,12 @@ const createTables = async () => {
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
+
+      CREATE TABLE product_categories (
+        product_id INTEGER REFERENCES products(product_id),
+        category_id INTEGER REFERENCES categories(category_id),
+        PRIMARY KEY (product_id, category_id)
+      );
     `);
   } catch (error) {
     throw error;
@@ -126,7 +131,7 @@ const insertUsers = async () => {
   try {
     for (const user of users) {
       const createdUser = await createUser({
-        username: user.username,
+        name: user.name,
         email: user.email,
         password: user.password,
         first_name: user.first_name,
@@ -151,19 +156,8 @@ const insertInitialData = async () => {
       categories,
       orders,
       order_items,
-      reviews,
-      wishlists,
-      wishlist_items
+      reviews
     } = initialData;
-
-    // Insert products
-    for (const product of products) {
-      await db.query(`
-        INSERT INTO products(name, brand, description, price, stock_quantity, image_url)
-        VALUES($1, $2, $3, $4, $5, $6)`,
-        [product.name, product.brand, product.description, product.price, product.stock_quantity, product.image_url]
-      );
-    }
 
     // Insert categories
     for (const category of categories) {
@@ -173,6 +167,31 @@ const insertInitialData = async () => {
         ON CONFLICT (name) DO NOTHING`,
         [category.name]
       );
+    }
+
+    // Insert products
+    for (const product of products) {
+      const result = await db.query(`
+        INSERT INTO products(name, brand, description, price, stock_quantity, image_url)
+        VALUES($1, $2, $3, $4, $5, $6) RETURNING product_id`,
+        [product.name, product.brand, product.description, product.price, product.stock_quantity, product.image_url]
+      );
+      const productId = result.rows[0].product_id;
+
+      // Associate products with categories
+      for (const categoryName of product.categories) {
+        const category = await db.query(`
+          SELECT * FROM categories WHERE name = $1`,
+          [categoryName]
+        );
+        if (category.rows.length > 0) {
+          await db.query(`
+            INSERT INTO product_categories(product_id, category_id)
+            VALUES($1, $2)`,
+            [productId, category.rows[0].category_id]
+          );
+        }
+      }
     }
 
     // Insert orders
@@ -185,11 +204,11 @@ const insertInitialData = async () => {
     }
 
     // Insert order items
-    for (const orderItem of order_items) { 
+    for (const item of order_items) {
       await db.query(`
         INSERT INTO order_items(order_id, product_id, quantity, item_price)
         VALUES($1, $2, $3, $4)`,
-        [orderItem.order_id, orderItem.product_id, orderItem.quantity, orderItem.item_price]
+        [item.order_id, item.product_id, item.quantity, item.item_price]
       );
     }
 
@@ -202,29 +221,12 @@ const insertInitialData = async () => {
       );
     }
 
-    // Insert wishlists
-    for (const wishlist of wishlists) {
-      await db.query(`
-        INSERT INTO wishlists(user_id)
-        VALUES($1)`,
-        [wishlist.user_id]
-      );
-    }
-
-    // Insert wishlist items
-    for (const wishlistItem of wishlist_items) { 
-      await db.query(`
-        INSERT INTO wishlist_items(wishlist_id, product_id)
-        VALUES($1, $2)`,
-        [wishlistItem.wishlist_id, wishlistItem.product_id]
-      );
-    }
-
     console.log("Initial data inserted successfully.");
   } catch (error) {
     console.error("Error inserting initial data:", error);
   }
 };
+
 
 const seedDatabase = async () => {
   try {
