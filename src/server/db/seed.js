@@ -1,34 +1,36 @@
-const db = require('./client');
+const db = require("./client");
 const { createUser } = require("./users");
-const initialData = require("./seedData");
+const tricksData = require("./tricksData");
+const recoveriesData = require("./recoveriesdata");
 
 const users = [
   {
-    name: 'ajseadler',
-    email: 'aj@a.com',
-    password: 'pass',
-    first_name:'AJ',
-    last_name: 'Seadler',
-    phone_number: '5021234432',
-    shipping_address: '123 main st',
-    billing_address: '123 main st',
+    name: "ajseadler",
+    email: "aj@a.com",
+    password: "pass",
+    first_name: "AJ",
+    last_name: "Seadler",
+    phone_number: "123-456-7890",
+    shipping_address: "123 Elm Street, Springfield",
+    billing_address: "123 Elm Street, Springfield",
   },
   {
-    name: 'tonysoprano',
-    email: 'tonE@a.com',
-    password: 'pass',
-    first_name:'Tony',
-    last_name: 'Soprano',
-    phone_number: '5021234432',
-    shipping_address: '123 main st',
-    billing_address: '123 main st',
-  }
+    name: "tonysoprano",
+    email: "tonE@a.com",
+    password: "pass",
+    first_name: "Tony",
+    last_name: "Soprano",
+    phone_number: "987-654-3210",
+    shipping_address: "456 Oak Avenue, Newark",
+    billing_address: "456 Oak Avenue, Newark",
+  },
 ];
 
 const dropTables = async () => {
   try {
-    // Drop tables with CASCADE option to drop dependent objects
-    await db.query('DROP TABLE IF EXISTS order_items, orders, reviews, wishlist_items, wishlists, users, products, categories, product_categories CASCADE;');
+    await db.query(`
+      DROP TABLE IF EXISTS user_tricks, tricks, user_recoveries, recoveries, users CASCADE;
+    `);
   } catch (error) {
     throw error;
   }
@@ -44,82 +46,47 @@ const createTables = async () => {
         password VARCHAR(255) NOT NULL,
         first_name VARCHAR(255),
         last_name VARCHAR(255),
-        phone_number VARCHAR(20),
+        phone_number VARCHAR(50),
         shipping_address TEXT,
         billing_address TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE products (
-        product_id SERIAL PRIMARY KEY,
-        name VARCHAR(255),
-        brand VARCHAR(255),
-        description TEXT,
-        price DECIMAL,
-        stock_quantity INTEGER,
-        image_url TEXT,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE categories (
-        category_id SERIAL PRIMARY KEY,
+      CREATE TABLE tricks (
+        trick_id SERIAL PRIMARY KEY,
         name VARCHAR(255) UNIQUE,
+        description TEXT,
+        difficulty_level VARCHAR(50),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
-      
-      CREATE TABLE orders (
-        order_id SERIAL PRIMARY KEY,
+
+      CREATE TABLE user_tricks (
+        user_trick_id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id),
-        order_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        total_price DECIMAL,
-        status VARCHAR(50),
+        trick_id INTEGER REFERENCES tricks(trick_id),
+        learned_date TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE order_items (
-        order_item_id SERIAL PRIMARY KEY,
-        order_id INTEGER REFERENCES orders(order_id),
-        product_id INTEGER REFERENCES products(product_id),
-        quantity INTEGER,
-        item_price DECIMAL,
+      CREATE TABLE recoveries (
+        recovery_id SERIAL PRIMARY KEY,
+        name VARCHAR(255),
+        description TEXT,
+        target_area VARCHAR(255),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE reviews (
-        review_id SERIAL PRIMARY KEY,
-        product_id INTEGER REFERENCES products(product_id),
+      CREATE TABLE user_recoveries (
+        user_recovery_id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id),
-        rating INTEGER,
-        comment TEXT,
-        review_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        recovery_id INTEGER REFERENCES recoveries(recovery_id),
+        recovery_date TIMESTAMP,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE wishlists (
-        wishlist_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE wishlist_items (
-        wishlist_item_id SERIAL PRIMARY KEY,
-        wishlist_id INTEGER REFERENCES wishlists(wishlist_id),
-        product_id INTEGER REFERENCES products(product_id),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE product_categories (
-        product_id INTEGER REFERENCES products(product_id),
-        category_id INTEGER REFERENCES categories(category_id),
-        PRIMARY KEY (product_id, category_id)
       );
     `);
   } catch (error) {
@@ -143,81 +110,31 @@ const insertUsers = async () => {
 
       console.log("User inserted:", createdUser);
     }
-    console.log("Seed data inserted successfully.");
+    console.log("Users inserted successfully.");
   } catch (error) {
-    console.error("Error inserting seed data:", error);
+    console.error("Error inserting users:", error);
   }
 };
 
 const insertInitialData = async () => {
   try {
-    const {
-      products,
-      categories,
-      orders,
-      order_items,
-      reviews
-    } = initialData;
-
-    // Insert categories
-    for (const category of categories) {
-      await db.query(`
-        INSERT INTO categories(name)
-        VALUES($1)
-        ON CONFLICT (name) DO NOTHING`,
-        [category.name]
-      );
-    }
-
-    // Insert products
-    for (const product of products) {
-      const result = await db.query(`
-        INSERT INTO products(name, brand, description, price, stock_quantity, image_url)
-        VALUES($1, $2, $3, $4, $5, $6) RETURNING product_id`,
-        [product.name, product.brand, product.description, product.price, product.stock_quantity, product.image_url]
-      );
-      const productId = result.rows[0].product_id;
-
-      // Associate products with categories
-      for (const categoryName of product.categories) {
-        const category = await db.query(`
-          SELECT * FROM categories WHERE name = $1`,
-          [categoryName]
-        );
-        if (category.rows.length > 0) {
-          await db.query(`
-            INSERT INTO product_categories(product_id, category_id)
-            VALUES($1, $2)`,
-            [productId, category.rows[0].category_id]
-          );
-        }
-      }
-    }
-
-    // Insert orders
-    for (const order of orders) {
-      await db.query(`
-        INSERT INTO orders(user_id, total_price, status)
+    // Insert tricks
+    for (const trick of tricksData) {
+      await db.query(
+        `
+        INSERT INTO tricks(name, description, difficulty_level)
         VALUES($1, $2, $3)`,
-        [order.user_id, order.total_price, order.status]
+        [trick.name, trick.description, trick.difficulty_level]
       );
     }
 
-    // Insert order items
-    for (const item of order_items) {
-      await db.query(`
-        INSERT INTO order_items(order_id, product_id, quantity, item_price)
-        VALUES($1, $2, $3, $4)`,
-        [item.order_id, item.product_id, item.quantity, item.item_price]
-      );
-    }
-
-    // Insert reviews
-    for (const review of reviews) {
-      await db.query(`
-        INSERT INTO reviews(product_id, user_id, rating, comment)
-        VALUES($1, $2, $3, $4)`,
-        [review.product_id, review.user_id, review.rating, review.comment]
+    // Insert recoveries
+    for (const recovery of recoveriesData) {
+      await db.query(
+        `
+        INSERT INTO recoveries(name, description, target_area)
+        VALUES($1, $2, $3)`,
+        [recovery.name, recovery.description, recovery.target_area]
       );
     }
 
@@ -227,6 +144,51 @@ const insertInitialData = async () => {
   }
 };
 
+const insertUserTricksAndRecoveries = async () => {
+  try {
+    // Get user IDs
+    const { rows: users } = await db.query("SELECT id FROM users");
+    const userIds = users.map((user) => user.id);
+
+    // Get trick IDs
+    const { rows: tricks } = await db.query("SELECT trick_id FROM tricks");
+    const trickIds = tricks.map((trick) => trick.trick_id);
+
+    // Get recovery IDs
+    const { rows: recoveries } = await db.query(
+      "SELECT recovery_id FROM recoveries"
+    );
+    const recoveryIds = recoveries.map((recovery) => recovery.recovery_id);
+
+    // Insert user_tricks
+    for (const userId of userIds) {
+      for (const trickId of trickIds) {
+        await db.query(
+          `
+          INSERT INTO user_tricks(user_id, trick_id, learned_date)
+          VALUES($1, $2, NOW())`,
+          [userId, trickId]
+        );
+      }
+    }
+
+    // Insert user_recoveries
+    for (const userId of userIds) {
+      for (const recoveryId of recoveryIds) {
+        await db.query(
+          `
+          INSERT INTO user_recoveries(user_id, recovery_id, recovery_date)
+          VALUES($1, $2, NOW())`,
+          [userId, recoveryId]
+        );
+      }
+    }
+
+    console.log("User tricks and recoveries inserted successfully.");
+  } catch (error) {
+    console.error("Error inserting user tricks and recoveries:", error);
+  }
+};
 
 const seedDatabase = async () => {
   try {
@@ -235,8 +197,9 @@ const seedDatabase = async () => {
     await createTables();
     await insertUsers();
     await insertInitialData();
+    await insertUserTricksAndRecoveries();
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error("Error seeding database:", error);
   } finally {
     await db.end();
   }

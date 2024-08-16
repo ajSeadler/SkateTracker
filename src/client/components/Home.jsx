@@ -1,82 +1,48 @@
-import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { Rating } from "@mui/material";
-import StarIcon from "@mui/icons-material/Star";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
-import ChatWithUsForm from "./ChatWithUsForm";
+import React from "react";
+import Nav from "./Nav";
+import "../styles/HomePage.css";
 
-const Home = () => {
-  const [products, setProducts] = useState([]);
-
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await fetch("/api/products");
-        if (!response.ok) {
-          throw new Error("Failed to fetch products");
-        }
-        const data = await response.json();
-        // Sorting products by price in descending order
-        const sortedProducts = data.sort((a, b) => b.price - a.price);
-        // Taking the top 5 most expensive guitars
-        const top5ExpensiveGuitars = sortedProducts.slice(0, 6);
-        setProducts(top5ExpensiveGuitars);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
-
-    fetchProducts();
-  }, []);
-
+const HomePage = () => {
   return (
-    <div className="home">
-      <div className="hero-section">
-        <img
-          className="hero-background"
-          src="https://www.gratefulweb.com/sites/default/files/images/articles/unnamed%28103%29_37.jpg"
-          alt="Hero Background"
-        />
-        
-      </div>
-      <div className="container">
-        <h2 className="sub-title">Our Top Picks</h2>
-        <div className="product-list">
-          {products.map((product) => (
-            <div key={product.name} className="product">
-              <Link
-                to={`/products/${product.product_id}`}
-                style={{ textDecoration: "none", color: "inherit" }}
-              >
-                <img
-                  className="product-image"
-                  src={product.image_url}
-                  alt={product.name}
-                />
-                <p className="product-name">{product.name}</p>
-                {product.rating && (
-                  <div>
-                    <Rating
-                      name="product-rating"
-                      value={parseFloat(product.rating)}
-                      precision={0.5}
-                      readOnly
-                      emptyIcon={<StarBorderIcon style={{ color: "gold" }} />}
-                      icon={<StarIcon style={{ color: "gold" }} />}
-                    />
-                  </div>
-                )}
-                {/* <p className="product-description">{product.description}</p> */}
-                <p className="product-price">${product.price}</p>
-                <button className="add-to-cart-button">Add to Cart</button>
-              </Link>
-            </div>
-          ))}
+    <div className="homepage">
+      {/* Navigation Component */}
+      <Nav />
+
+      {/* Hero Section */}
+      <section className="hero">
+        <div className="hero-content">
+          <h1>Master Your Skills & Recover Like a Pro</h1>
+          <p>
+            Track every trick you’ve learned and monitor your recovery progress
+            with personalized exercises.
+          </p>
+          <div className="hero-buttons">
+            <button className="cta-btn">Get Started</button>
+            <button className="secondary-btn">Learn More</button>
+          </div>
         </div>
-      </div>
-      <ChatWithUsForm />
+      </section>
+
+      {/* Key Features Section */}
+      <section className="features">
+        <div className="feature-card">
+          <div className="feature-icon">🛹</div>
+          <h3>Track Your Tricks</h3>
+          <p>Log every trick, track your progress, and set goals.</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">➕</div>
+          <h3>Monitor Recovery</h3>
+          <p>Custom recovery plans tailored to your injuries and progress.</p>
+        </div>
+        <div className="feature-card">
+          <div className="feature-icon">📊</div>
+          <h3>Analyze Performance</h3>
+          <p>Get detailed analytics and insights on your progress.</p>
+        </div>
+      </section>
     </div>
   );
 };
 
-export default Home;
+export default HomePage;
