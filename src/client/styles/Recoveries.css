@@ -1,0 +1,82 @@
+/* Recoveries.css */
+
+.recoveries-container {
+  width: 100vw;
+  height: 100vh;
+  padding: 20px;
+  background-color: #121212; /* Dark background for consistency */
+  color: #e0e0e0; /* Light gray text for better readability */
+}
+
+.recoveries-title {
+  font-size: 2.5rem;
+  margin-bottom: 30px;
+  text-align: center;
+  color: #e0e0e0; /* Light gray title color */
+  font-weight: bold;
+}
+
+.recoveries-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.recovery-card {
+  background-color: #1e1e1e; /* Dark card background for contrast */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.recovery-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+}
+
+.recovery-header {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.recovery-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background-color: #333; /* Dark background for the icon */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  color: #ffffff;
+}
+
+.recovery-name {
+  font-size: 1.75rem;
+  font-weight: bold;
+  color: #ffffff; /* White text for the name */
+}
+
+.recovery-description {
+  font-size: 1rem;
+  color: #c0c0c0; /* Light gray for description text */
+  margin-bottom: 15px;
+}
+
+.recovery-date {
+  font-size: 0.875rem;
+  color: #a0a0a0; /* Slightly lighter gray for the date */
+}
+
+.loading,
+.error {
+  text-align: center;
+  font-size: 1.25rem;
+  color: #ff6b6b; /* Soft red color for errors */
+  margin-top: 20px;
+}

@@ -3,16 +3,42 @@ body {
   margin: 0;
   font-family: "Arial", sans-serif;
   background-color: #121212;
-  color: #ffffff;
+  color: #e0e0e0; /* Light gray for general text */
+  overflow-x: hidden; /* Prevent horizontal scrolling if content overflows */
 }
 
 a {
   text-decoration: none;
-  color: #ffffff;
+  color: #8e2de2; /* Tech purple for links */
+}
+
+a:hover {
+  color: #6a1b9a; /* Slightly darker purple on hover */
 }
 
 button {
   cursor: pointer;
+}
+
+.homepage {
+  display: flex;
+  width: 100vw;
+  min-height: 100vh; /* Ensure homepage fills at least the height of the viewport */
+  margin: auto;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  background-color: #121212; /* Dark background to match your app's theme */
+}
+
+/* Ensure hero background takes full width and height of the hero section */
+.hero-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1; /* Place behind the hero content */
 }
 
 /* Hero Section */
@@ -20,31 +46,39 @@ button {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 80vh;
-  background-image: url("https://example.com/skateboard-hero.jpg");
+  min-height: 100vh; /* Fill at least the viewport height */
+  width: 100vw;
   background-size: cover;
   background-position: center;
   position: relative;
   padding: 20px;
+  box-sizing: border-box; /* Include padding in the element's width/height */
 }
+
+/* Other styles remain the same */
 
 .hero-content {
   text-align: center;
-  max-width: 600px;
-  background-color: rgba(0, 0, 0, 0.6);
+  z-index: 2;
+  max-width: 90%;
+  width: 600px;
+  background-color: rgba(0, 0, 0, 0.1); /* Darker background for a sleek look */
   padding: 40px;
   border-radius: 20px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
 }
 
 .hero h1 {
-  font-size: 3rem;
+  font-size: 2rem;
   margin-bottom: 20px;
-  color: #b50000;
+  color: #fff; /* Tech purple for hero text */
+  text-shadow: 0 0 8px rgba(142, 45, 226, 0.8); /* Glowing effect */
 }
 
 .hero p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-bottom: 40px;
+  color: #e0e0e0; /* Light gray for body text */
 }
 
 .hero-buttons button {
@@ -56,23 +90,25 @@ button {
 }
 
 .cta-btn {
-  background-color: #b50000;
-  color: #ffffff;
+  background-color: #8e2de2; /* Tech purple */
+  color: #121212; /* Dark text for contrast */
+  box-shadow: 0 2px 4px rgba(142, 45, 226, 0.4);
 }
 
 .cta-btn:hover {
-  background-color: #b50000;
+  background-color: #6a1b9a; /* Slightly darker purple */
 }
 
 .secondary-btn {
   background-color: transparent;
-  color: #b50000;
-  border-color: #b50000;
+  color: #8e2de2; /* Tech purple */
+  border-color: #8e2de2; /* Tech purple */
+  box-shadow: 0 2px 4px rgba(142, 45, 226, 0.4);
 }
 
 .secondary-btn:hover {
-  background-color: #b50000;
-  color: #ffffff;
+  background-color: #8e2de2; /* Tech purple */
+  color: #121212; /* Dark text */
 }
 
 /* Responsive Hero Section */
@@ -89,6 +125,11 @@ button {
     padding: 12px 25px;
     font-size: 0.9rem;
   }
+
+  .hero-content {
+    width: 80%;
+    padding: 30px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -104,58 +145,93 @@ button {
     padding: 10px 20px;
     font-size: 0.8rem;
   }
+
+  .hero-content {
+    width: 90%;
+    padding: 20px;
+  }
 }
 
 /* Key Features Section */
 .features {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
   padding: 60px 20px;
   background-color: #1e1e1e;
+  width: 100vw; /* Full width of the viewport */
+  box-sizing: border-box; /* Ensure padding does not affect width */
+}
+
+.features-container {
+  display: flex;
+  justify-content: center;
   flex-wrap: wrap;
+  max-width: 1200px; /* Limit max width for content alignment */
+  margin: 0 auto; /* Center content */
 }
 
 .feature-card {
-  margin: 20px;
+  background-color: #2a2a2a; /* Slightly lighter dark background for contrast */
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  margin: 15px;
   text-align: center;
-  max-width: 300px;
-  flex: 1 1 300px;
+  max-width: 300px; /* Restrict card width for better readability */
+  flex: 1 1 calc(33% - 40px); /* 3 cards per row with spacing */
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
 }
 
 .feature-icon {
-  font-size: 2rem;
+  font-size: 2.5rem; /* Increased size for better visibility */
+  color: #8e2de2; /* Tech purple */
   margin-bottom: 20px;
 }
 
 .feature-card h3 {
-  font-size: 1.5rem;
+  font-size: 1.75rem;
   margin-bottom: 15px;
-  color: #b50000;
+  color: #e0e0e0; /* Light gray for readability */
 }
 
 .feature-card p {
   font-size: 1rem;
-  color: #d3d3d3;
+  color: #b0b0b0; /* Subtle gray for the description */
 }
 
 /* Responsive Key Features Section */
 @media (max-width: 768px) {
-  .features {
-    flex-direction: column;
-    align-items: center;
-  }
-
   .feature-card {
     max-width: 90%;
+    flex: 1 1 90%; /* Single column layout */
+    margin: 15px auto; /* Center cards */
   }
-}
 
-@media (max-width: 480px) {
   .feature-card h3 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
 
   .feature-card p {
     font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .feature-card {
+    max-width: 100%;
+  }
+
+  .feature-card h3 {
+    font-size: 1.3rem;
+  }
+
+  .feature-card p {
+    font-size: 0.8rem;
   }
 }

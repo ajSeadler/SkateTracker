@@ -1,0 +1,212 @@
+/* General Page Styling */
+.profile-page {
+  display: flex;
+  flex-direction: row;
+  background-color: #18191a; /* Dark background color */
+  color: #e4e6eb; /* Light text color */
+  min-height: 100vh; /* Ensure full viewport height */
+  padding: 0;
+  box-sizing: border-box; /* Include padding in height calculations */
+  overflow: auto; /* Prevent content overflow */
+}
+
+/* Sidebar Styling */
+.sidebar {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start; /* Align items to the left */
+  justify-content: flex-start; /* Align items to the top */
+  overflow: auto; /* Prevent overflow */
+  border: 1px solid #777; /* Border for visual separation */
+  max-height: calc(100vh - 20px); /* Adjust for any padding/margin */
+  background-color: #202225; /* Slightly lighter background for contrast */
+}
+
+/* Feed Styling */
+.feed {
+  flex: 2;
+  display: grid; /* Use grid layout for feed cards */
+  grid-template-columns: repeat(2, 1fr); /* 2 columns */
+  gap: 20px; /* Space between cards */
+  padding: 20px; /* Add padding for better spacing */
+  overflow-y: auto; /* Allow vertical scrolling if content exceeds */
+  border: 1px solid #777; /* Border for visual separation */
+  max-height: calc(100vh - 40px); /* Adjust for any padding/margin */
+  box-sizing: border-box;
+  background-color: #18191a; /* Match general page background */
+}
+
+.feed-heading {
+  margin-bottom: 0 !important;
+  font-weight: bold !important;
+  color: #fff; /* Use vibrant purple for headings */
+}
+
+.feed-description {
+  background-color: #8e2de2; /* Purple background for descriptions */
+  color: #ffffff; /* Light text on purple background */
+  padding: 10px;
+  border-radius: 20px;
+}
+
+/* Profile Info Card */
+.profile-info-card {
+  background-color: transparent !important; /* Slightly lighter dark background for cards */
+  border-left: 5px solid #8e2de2; /* Purple border for emphasis */
+  border-radius: 0 !important;
+  width: 100%; /* Full width of the sidebar */
+  max-width: 400px; /* Maximum width for large screens */
+  box-sizing: border-box; /* Ensure padding and borders are included in width */
+  padding: 20px; /* Add padding inside the card */
+}
+
+/* Profile Name and Details */
+.profile-name {
+  color: #fff; /* Use purple for profile name */
+  font-weight: bolder !important;
+  margin-bottom: 5% !important;
+  font-size: 1.8rem; /* Slightly larger font for the name */
+}
+
+.profile-details {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.profile-detail {
+  color: #e4e6eb;
+  margin-bottom: 8px;
+  font-size: 1rem; /* Slightly larger font size */
+}
+
+.side-info-card {
+  background-color: transparent !important; /* Dark card background */
+  border-left: 5px solid #8e2de2; /* Purple border for emphasis */
+  border-radius: 12px !important; /* Rounded corners */
+  padding: 16px !important; /* Inner padding */
+  width: 100%; /* Full width of the container */
+  max-width: 400px; /* Maximum width for large screens */
+  margin-bottom: 20px; /* Space between cards */
+  border-radius: 0 !important;
+  box-sizing: border-box; /* Include padding and border in width calculations */
+  transition: transform 0.3s ease-in-out;
+}
+
+.side-info-card:hover {
+  transform: translateY(-5px); /* Subtle hover effect */
+}
+
+.side-info-card h6 {
+  color: #fff; /* Purple color for the title */
+  text-decoration: underline;
+  font-size: 1.4rem; /* Slightly larger font size */
+  margin-bottom: 10px !important;
+}
+
+.side-info-card p {
+  color: #b0b3b8; /* Slightly lighter text color */
+  font-size: 1rem; /* Set a consistent font size */
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: block;
+  margin: 20px auto;
+}
+
+/* Tricks Container */
+.tricks-cont {
+  display: flex;
+  flex-direction: column; /* Stack tricks vertically */
+  gap: 20px; /* Space between cards */
+  align-items: center; /* Center align tricks cards */
+  width: 100%; /* Full width */
+  max-width: 1200px; /* Max width for large screens */
+  margin: 0 auto; /* Center the container horizontally */
+  margin-top: 0 !important; /* Space between heading and cards */
+  box-sizing: border-box;
+}
+
+/* Tricks Card */
+.tricks-card {
+  background-color: #242526 !important; /* Dark card background */
+  border-radius: 12px !important;
+  border-left: 5px solid #8e2de2; /* Purple border for emphasis */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+  padding: 16px;
+  width: 100%; /* Full width of the container */
+  max-width: 500px; /* Max width for large screens */
+  box-sizing: border-box;
+  transition: transform 0.3s ease-in-out;
+}
+
+.tricks-card:hover {
+  transform: translateY(-5px); /* Subtle hover effect */
+}
+
+.tricks-card h6 {
+  color: #8e2de2; /* Purple for titles */
+  font-size: 1.4rem; /* Slightly larger font size */
+}
+
+.tricks-card p {
+  color: #b0b3b8; /* Slightly lighter text color for body text */
+  font-size: 1rem; /* Set a consistent font size */
+}
+
+/* Feed Cards */
+.feed-card {
+  background-color: #242526 !important; /* Dark card background */
+  border-radius: 20px !important;
+  border-left: 5px solid #8e2de2; /* Purple border for emphasis */
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
+  height: auto;
+  padding: 16px !important;
+  width: 100% !important; /* Make sure each card takes full width of the grid cell */
+  box-sizing: border-box;
+  transition: transform 0.3s ease-in-out;
+}
+
+.feed-card:hover {
+  transform: translateY(-5px); /* Subtle hover effect */
+}
+
+.feed-card .MuiCardContent-root {
+  padding: 16px;
+}
+
+.feed-card h6 {
+  color: #8e2de2; /* Purple for titles */
+  margin-bottom: 8px;
+  font-size: 1.4rem; /* Slightly larger font size */
+}
+
+.feed-card p {
+  color: #b0b3b8; /* Slightly lighter text color for body text */
+  font-size: 1rem; /* Set a consistent font size */
+}
+
+/* Recoveries Container */
+.recoveries-cont {
+  display: flex;
+  flex-direction: column; /* Stack recoveries vertically */
+  gap: 20px; /* Space between cards */
+  align-items: center; /* Center align recovery cards */
+  width: 100%; /* Full width */
+  max-width: 100%; /* Max width for large screens */
+  margin: 0 auto; /* Center the container horizontally */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .feed {
+    grid-template-columns: repeat(1, 1fr); /* 1 column on tablets */
+  }
+
+  .profile-info-card {
+    width: 100%; /* Full width on smaller screens */
+    max-width: none; /* Remove max-width restriction */
+  }
+}

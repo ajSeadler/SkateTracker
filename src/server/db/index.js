@@ -1,7 +1,7 @@
 module.exports = {
-    ...require('./users'),
-    ...require('./products'),
-   
+  ...require("./users"),
+  ...require("./recoveries"),
+  ...require("./tricks"),
 
-    // add in other modlues
-}
+  // add in other modlues
+};

@@ -23,7 +23,7 @@ apiRouter.use(async (req, res, next) => {
 
       const id = parsedToken && parsedToken.id;
       if (id) {
-        req.user = await getUserById(id)
+        req.user = await getUserById(id);
         next();
       }
     } catch (error) {
@@ -48,10 +48,12 @@ apiRouter.use((req, res, next) => {
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
-const productsRouter = require("./products");
-apiRouter.use("/products", productsRouter);
+const recoveriesRouter = require("./recoveries");
+apiRouter.use("/recoveries", recoveriesRouter);
+
+const tricksRouter = require("./tricks");
+apiRouter.use("/tricks", tricksRouter);
 
 // add in other routes like above
-
 
 module.exports = apiRouter;

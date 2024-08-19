@@ -1,61 +1,125 @@
+/* Existing Header Styles */
 .header {
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: #1e1e1e;
+  background-color: #1e1e1e; /* Dark background for the header */
 }
 
 .logo a {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #b50000;
+  color: #fff; /* Tech purple for logo */
   text-decoration: none;
 }
 
 .nav {
   display: flex;
   align-items: center;
+  justify-content: center; /* Center the links on larger screens */
+  flex-grow: 1; /* Ensure nav takes available space */
 }
 
 .nav a {
   margin-left: 20px;
+  font-weight: bold;
   font-size: 1rem;
-  color: #ffffff;
+  color: #e0e0e0; /* Light gray for navigation links */
   text-decoration: none;
 }
 
 .nav a:hover {
-  color: #b50000;
+  color: #8e2de2; /* Tech purple for hover state */
 }
 
 .login-btn {
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #b50000;
-  color: #ffffff;
+  background-color: #8e2de2; /* Tech purple for button */
+  color: #ffffff; /* White text for contrast */
   margin-left: 20px;
 }
 
 .login-btn:hover {
-  background-color: #e65c00;
+  background-color: #6a1b9a; /* Slightly darker purple on hover */
+}
+
+/* Mobile Navigation Styles */
+.menu-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px;
+}
+
+.menu-icon {
+  width: 25px;
+  height: 3px;
+  background-color: #ffffff;
+  margin: 3px 0;
+  transition: 0.3s;
+}
+
+/* Mobile menu modal */
+.mobile-menu {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+  color: #fff;
+  padding: 20px;
+  z-index: 1000; /* Ensure it's on top */
+  overflow-y: auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.mobile-menu.show {
+  display: flex;
+}
+
+.mobile-menu a {
+  display: block;
+  margin: 15px 0;
+  font-size: 1.5rem;
+  color: #e0e0e0; /* Light gray for links */
+  text-decoration: none;
+}
+
+.mobile-menu a:hover {
+  color: #8e2de2; /* Tech purple for hover state */
 }
 
 /* Responsive Navigation */
 @media (max-width: 768px) {
   .header {
     padding: 10px 20px;
+    position: relative; /* Required for positioning the mobile menu */
   }
 
   .logo a {
     font-size: 1.2rem;
   }
 
-  .nav a {
-    font-size: 0.9rem;
+  .nav {
+    display: none; /* Hide nav links on mobile */
   }
 
-  .signup-btn {
+  .menu-toggle {
+    display: flex;
+  }
+
+  .login-btn {
     padding: 6px 12px;
     font-size: 0.9rem;
   }

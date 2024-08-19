@@ -5,7 +5,7 @@ const recoveriesData = require("./recoveriesdata");
 
 const users = [
   {
-    name: "ajseadler",
+    name: "aj_seadler",
     email: "aj@a.com",
     password: "pass",
     first_name: "AJ",
