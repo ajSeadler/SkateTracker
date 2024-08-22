@@ -286,6 +286,10 @@ const insertUserTricksAndRecoveries = async () => {
     );
     const recoveryIds = recoveries.map((recovery) => recovery.recovery_id);
 
+    const selectedRecoveryIds = recoveryIds
+      .sort(() => 0.5 - Math.random())
+      .slice(0, 0);
+
     // Insert user_tricks with only 5 selected tricks
     for (const userId of userIds) {
       for (const trickId of selectedTrickIds) {
@@ -300,7 +304,7 @@ const insertUserTricksAndRecoveries = async () => {
 
     // Insert user_recoveries
     for (const userId of userIds) {
-      for (const recoveryId of recoveryIds) {
+      for (const recoveryId of selectedRecoveryIds) {
         await db.query(
           `
           INSERT INTO user_recoveries(user_id, recovery_id, recovery_date)

@@ -30,7 +30,6 @@ tricksRouter.get("/user", requireUser, async (req, res) => {
   }
 });
 
-// POST /api/tricks/user/add - Add a trick to the authenticated user (authentication required)
 tricksRouter.post("/user/add", requireUser, async (req, res) => {
   const { trickId } = req.body;
 
@@ -41,7 +40,8 @@ tricksRouter.post("/user/add", requireUser, async (req, res) => {
   }
 
   try {
-    const result = await addUserTrick(req.user.id, trickId);
+    // Pass the current date to ensure that the server sets the created_at timestamp
+    const result = await addUserTrick(req.user.id, trickId, new Date());
     res.json({ message: "Trick added successfully", data: result });
   } catch (error) {
     console.error("Error adding trick:", error);

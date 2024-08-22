@@ -29,6 +29,15 @@ const TricksList = ({ tricks, loading, error, deleteTrick }) => (
                 <Typography variant="h6">{trick.name}</Typography>
               </div>
               <Typography variant="body2">{trick.difficulty_level}</Typography>
+              <Typography variant="body2">
+                Added On:{" "}
+                {new Date(trick.created_at).toLocaleDateString("en-US", {
+                  month: "2-digit",
+                  day: "2-digit",
+                  year: "numeric",
+                })}
+              </Typography>
+
               <div className="trick-card-actions">
                 {/* <IconButton size="small" color="primary">
                   <EditIcon />

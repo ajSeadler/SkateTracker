@@ -13,7 +13,7 @@ import "../styles/ProfilePage.css";
 const RecoveriesList = ({ recoveries, loading, error }) => (
   <>
     <Typography variant="h5" className="feed-heading">
-      My Recoveries
+      Warm-Ups
     </Typography>
     <div className="tricks-cont">
       {loading ? (
@@ -45,9 +45,8 @@ const RecoveriesList = ({ recoveries, loading, error }) => (
           </Card>
         ))
       ) : (
-        <Typography variant="body1">
-          No recoveries found for this user. Add new recoveries to start
-          tracking your progress.
+        <Typography variant="body1" style={{ fontWeight: "bold" }}>
+          No warm-ups found. Don't pull a muscle :)
         </Typography>
       )}
     </div>
