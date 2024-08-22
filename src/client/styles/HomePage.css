@@ -62,7 +62,7 @@ button {
   z-index: 2;
   max-width: 90%;
   width: 600px;
-  background-color: rgba(0, 0, 0, 0.1); /* Darker background for a sleek look */
+  /* background-color: rgba(0, 0, 0, 0.1);  */
   padding: 40px;
   border-radius: 20px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
@@ -99,16 +99,14 @@ button {
   background-color: #6a1b9a; /* Slightly darker purple */
 }
 
-.secondary-btn {
-  background-color: transparent;
-  color: #8e2de2; /* Tech purple */
-  border-color: #8e2de2; /* Tech purple */
-  box-shadow: 0 2px 4px rgba(142, 45, 226, 0.4);
+.secondary-btn:hover {
+  background-color: #6a1b9a; /* Slightly darker purple */
 }
 
-.secondary-btn:hover {
+.secondary-btn {
   background-color: #8e2de2; /* Tech purple */
-  color: #121212; /* Dark text */
+  border-color: #8e2de2; /* Tech purple */
+  box-shadow: 0 2px 4px rgba(142, 45, 226, 0.4);
 }
 
 /* Responsive Hero Section */

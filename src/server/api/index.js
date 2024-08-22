@@ -39,7 +39,7 @@ apiRouter.use(async (req, res, next) => {
 
 apiRouter.use((req, res, next) => {
   if (req.user) {
-    console.log("User is set:", req.user);
+    console.log("User is set");
   }
 
   next();
@@ -53,6 +53,9 @@ apiRouter.use("/recoveries", recoveriesRouter);
 
 const tricksRouter = require("./tricks");
 apiRouter.use("/tricks", tricksRouter);
+
+const trickGoalsRouter = require("./trickGoals");
+apiRouter.use("/trickGoals", trickGoalsRouter);
 
 // add in other routes like above
 

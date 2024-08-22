@@ -1,12 +1,18 @@
-import React, { useState, useEffect } from "react";
-import "../styles/Tricks.css"; // Ensure this CSS file exists for styling
+import { useState, useEffect } from "react";
+import "../styles/Tricks.css";
 
-const Tricks = () => {
+const Tricks = ({ userId }) => {
   const [tricks, setTricks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addedTricks, setAddedTricks] = useState(new Set());
+  const [token, setToken] = useState(null); // Add state for the token
 
   useEffect(() => {
+    // Retrieve token from localStorage or context
+    const storedToken = localStorage.getItem("token"); // Adjust this based on where your token is stored
+    setToken(storedToken);
+
     const fetchTricks = async () => {
       try {
         const response = await fetch("/api/tricks");
@@ -14,12 +20,7 @@ const Tricks = () => {
           throw new Error("Network response was not ok");
         }
         const data = await response.json();
-        console.log("API Response Data:", data); // Log response data for debugging
-        if (Array.isArray(data) && data.length > 0) {
-          setTricks(data);
-        } else {
-          throw new Error("Unexpected response structure");
-        }
+        setTricks(data);
       } catch (error) {
         setError(error);
       } finally {
@@ -28,31 +29,56 @@ const Tricks = () => {
     };
 
     fetchTricks();
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
+  const addTrickToUser = async (trickId) => {
+    if (!token) {
+      alert("User not authenticated. Please log in.");
+      return;
+    }
 
-  if (error) {
-    return <div className="error">Error: {error.message}</div>;
-  }
+    try {
+      const response = await fetch(`/api/tricks/user/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Use the token here
+        },
+        body: JSON.stringify({ trickId, userId }), // Send the userId with the request
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to add trick");
+      }
+
+      const result = await response.json();
+      alert(result.message || "Trick added successfully");
+
+      // Update the UI by marking the trick as added
+      setAddedTricks((prev) => new Set(prev).add(trickId));
+    } catch (error) {
+      console.error("Error adding trick:", error);
+      alert("There was an error adding the trick");
+    }
+  };
+
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">Error: {error.message}</div>;
 
   return (
     <div className="tricks-container">
       <h1 className="tricks-title">Tricks To Track</h1>
-      <div className="tricks-subtitle">
-        <p>Here are a few basic tricks to get you started.</p>
-        <p>Create an account to unlock more!</p>
-      </div>
       <div className="tricks-list">
         {tricks.map((trick) => (
           <div key={trick.trick_id} className="trick-card">
             <h2 className="trick-name">{trick.name}</h2>
             <p className="trick-description">{trick.description}</p>
-            <p className="trick-date">
-              {new Date(trick.created_at).toLocaleDateString()}
-            </p>
+            <button
+              onClick={() => addTrickToUser(trick.trick_id)}
+              disabled={addedTricks.has(trick.trick_id)} // Disable button if trick is already added
+            >
+              {addedTricks.has(trick.trick_id) ? "Added" : "Add to My Tricks"}
+            </button>
           </div>
         ))}
       </div>

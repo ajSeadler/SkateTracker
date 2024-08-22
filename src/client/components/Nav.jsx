@@ -17,13 +17,16 @@ const Nav = () => {
         </div>
         <nav className="nav">
           <Link to="/">Home</Link>
-          <Link to="/track-tricks">Track Tricks</Link>
+          <Link to="/track-tricks">Tricks</Link>
           <Link to="/recoveries">Recoveries</Link>
           <Link to="/community">Community</Link>
           <Link to="/me">Profile</Link>
         </nav>
         <Link to="/login">
-          <button className="login-btn">Login / Sign Up</button>
+          <button className="login-btn">Login</button>
+        </Link>
+        <Link to="/signup">
+          <button className="login-btn">Sign Up</button>
         </Link>
         <button className="menu-toggle" onClick={toggleMenu}>
           <span className="menu-icon"></span>
@@ -54,7 +57,7 @@ const Nav = () => {
             Profile
           </Link>
           <Link to="/login" onClick={toggleMenu}>
-            <button className="login-btn">Login / Sign Up</button>
+            <button className="login-btn">Login</button>
           </Link>
         </div>
       )}

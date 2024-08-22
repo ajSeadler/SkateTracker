@@ -2,43 +2,43 @@
 .profile-page {
   display: flex;
   flex-direction: row;
-  background-color: #18191a; /* Dark background color */
-  color: #e4e6eb; /* Light text color */
-  min-height: 100vh; /* Ensure full viewport height */
+  height: 100vh; /* Ensure the page takes the full viewport height */
+  background-color: #18191a;
+  color: #e4e6eb;
   padding: 0;
-  box-sizing: border-box; /* Include padding in height calculations */
-  overflow: auto; /* Prevent content overflow */
+  box-sizing: border-box;
+  overflow: hidden; /* Prevent outer overflow */
 }
 
 /* Sidebar Styling */
 .sidebar {
-  flex: 1;
+  flex: 0.5;
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* Align items to the left */
-  justify-content: flex-start; /* Align items to the top */
-  overflow: auto; /* Prevent overflow */
-  border: 1px solid #777; /* Border for visual separation */
-  max-height: calc(100vh - 20px); /* Adjust for any padding/margin */
-  background-color: #202225; /* Slightly lighter background for contrast */
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+  border: 1px solid #777 !important;
+  background-color: #202225 !important;
+  overflow-y: scroll !important; /* Enable vertical scrolling */
+  max-height: 100%; /* Ensure the sidebar takes up the full height */
+  box-sizing: border-box !important;
 }
 
 /* Feed Styling */
 .feed {
   flex: 2;
-  display: grid; /* Use grid layout for feed cards */
-  grid-template-columns: repeat(2, 1fr); /* 2 columns */
-  gap: 20px; /* Space between cards */
-  padding: 20px; /* Add padding for better spacing */
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
   overflow-y: auto; /* Allow vertical scrolling if content exceeds */
-  border: 1px solid #777; /* Border for visual separation */
-  max-height: calc(100vh - 40px); /* Adjust for any padding/margin */
-  box-sizing: border-box;
-  background-color: #18191a; /* Match general page background */
+  border: 1px solid #777;
+  background-color: #18191a;
+  max-height: 100%; /* Ensure the feed takes up the full height */
 }
 
 .feed-heading {
-  margin-bottom: 0 !important;
+  margin-bottom: 5% !important;
   font-weight: bold !important;
   color: #fff; /* Use vibrant purple for headings */
 }
@@ -55,6 +55,7 @@
   background-color: transparent !important; /* Slightly lighter dark background for cards */
   border-left: 5px solid #8e2de2; /* Purple border for emphasis */
   border-radius: 0 !important;
+  overflow-y: scroll;
   width: 100%; /* Full width of the sidebar */
   max-width: 400px; /* Maximum width for large screens */
   box-sizing: border-box; /* Ensure padding and borders are included in width */
@@ -62,6 +63,17 @@
 }
 
 /* Profile Name and Details */
+.avatar-container {
+  display: flex;
+  justify-content: left;
+  margin-bottom: 16px;
+}
+
+.profile-avatar {
+  width: 100px !important;
+  height: 100px !important;
+  border: 4px solid #fff; /* Optional: adds a border around the avatar */
+}
 .profile-name {
   color: #fff; /* Use purple for profile name */
   font-weight: bolder !important;
@@ -71,14 +83,27 @@
 
 .profile-details {
   display: flex;
+  overflow-y: scroll;
   flex-direction: column;
   gap: 20px;
 }
 
 .profile-detail {
   color: #e4e6eb;
+  overflow-y: scroll;
   margin-bottom: 8px;
   font-size: 1rem; /* Slightly larger font size */
+}
+
+/* Goals */
+.profile-divider {
+  margin: 16px 0;
+}
+
+.profile-goals-title {
+  margin-top: 16px;
+  margin-bottom: 8px;
+  color: #ffffff;
 }
 
 .side-info-card {
@@ -108,6 +133,60 @@
 .side-info-card p {
   color: #b0b3b8; /* Slightly lighter text color */
   font-size: 1rem; /* Set a consistent font size */
+}
+
+/* Goals.css */
+
+/* Container for the whole Goals section */
+.goals-container {
+  background-color: #1e1e1e; /* Dark background for consistency with dark theme */
+  color: #e0e0e0; /* Light text color for contrast */
+  border: 1px solid #e2c42d;
+  border-radius: 10px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3); /* Subtle shadow for depth */
+}
+
+/* Heading styles */
+.goals-container h3 {
+  color: #f5f5f5; /* Slightly lighter color for heading */
+}
+
+/* Section for individual goal categories */
+.goal-section {
+  margin-bottom: 20px;
+}
+
+/* Styles for each goal item */
+.goal-item {
+  border-radius: 8px;
+  padding: 15px;
+  margin-bottom: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Slight shadow for separation */
+  transition: background-color 0.3s ease;
+}
+
+/* Hover effect for goal items */
+.goal-item:hover {
+  background-color: #333333; /* Slightly lighter on hover */
+}
+
+/* Styles for achieved goal items */
+.goal-item.achieved {
+  background-color: #4caf50; /* Green background for achieved goals */
+  color: #fff; /* White text for contrast */
+}
+
+/* Text styling within goal items */
+.goal-item p {
+  margin: 5px 0;
+  font-size: 1rem;
+}
+
+/* Bold text for labels */
+.goal-item strong {
+  color: #f5f5f5; /* Lighter color for labels */
 }
 
 /* Loading Spinner */
@@ -147,13 +226,20 @@
 }
 
 .tricks-card h6 {
-  color: #8e2de2; /* Purple for titles */
+  /* color: #8e2de2;  */
+  color: #fff !important;
   font-size: 1.4rem; /* Slightly larger font size */
 }
 
 .tricks-card p {
   color: #b0b3b8; /* Slightly lighter text color for body text */
   font-size: 1rem; /* Set a consistent font size */
+}
+
+.trick-card-actions {
+  display: flex;
+  justify-content: end;
+  align-items: center;
 }
 
 /* Feed Cards */
@@ -178,35 +264,12 @@
 }
 
 .feed-card h6 {
-  color: #8e2de2; /* Purple for titles */
-  margin-bottom: 8px;
+  color: #fff; /* Purple for titles */
+  margin-bottom: 0px;
   font-size: 1.4rem; /* Slightly larger font size */
 }
 
 .feed-card p {
   color: #b0b3b8; /* Slightly lighter text color for body text */
   font-size: 1rem; /* Set a consistent font size */
-}
-
-/* Recoveries Container */
-.recoveries-cont {
-  display: flex;
-  flex-direction: column; /* Stack recoveries vertically */
-  gap: 20px; /* Space between cards */
-  align-items: center; /* Center align recovery cards */
-  width: 100%; /* Full width */
-  max-width: 100%; /* Max width for large screens */
-  margin: 0 auto; /* Center the container horizontally */
-}
-
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-  .feed {
-    grid-template-columns: repeat(1, 1fr); /* 1 column on tablets */
-  }
-
-  .profile-info-card {
-    width: 100%; /* Full width on smaller screens */
-    max-width: none; /* Remove max-width restriction */
-  }
 }
