@@ -17,7 +17,7 @@
   flex-direction: column;
   align-items: flex-start !important;
   justify-content: flex-start !important;
-  border: 1px solid #777 !important;
+  border: 1px solid #301919 !important;
   background-color: #202225 !important;
   overflow-y: scroll !important; /* Enable vertical scrolling */
   max-height: 100%; /* Ensure the sidebar takes up the full height */
@@ -199,12 +199,11 @@
 .tricks-cont {
   display: flex;
   flex-direction: column; /* Stack tricks vertically */
-  gap: 20px; /* Space between cards */
+  gap: 15px; /* Space between cards */
   align-items: center; /* Center align tricks cards */
-  width: 100%; /* Full width */
-  max-width: 1200px; /* Max width for large screens */
-  margin: 0 auto; /* Center the container horizontally */
-  margin-top: 0 !important; /* Space between heading and cards */
+  width: 75%; /* Full width */
+  margin: 0; /* Center the container horizontally */
+  height: auto;
   box-sizing: border-box;
 }
 
@@ -249,7 +248,7 @@
   border-left: 5px solid #8e2de2; /* Purple border for emphasis */
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
   height: auto;
-  padding: 16px !important;
+  padding: 15px !important;
   width: 100% !important; /* Make sure each card takes full width of the grid cell */
   box-sizing: border-box;
   transition: transform 0.3s ease-in-out;

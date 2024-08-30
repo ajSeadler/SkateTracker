@@ -159,6 +159,7 @@ const createTables = async () => {
         name VARCHAR(255) UNIQUE,
         description TEXT,
         difficulty_level VARCHAR(50),
+        category VARCHAR(50),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -243,9 +244,9 @@ const insertInitialData = async () => {
     for (const trick of tricksData) {
       await db.query(
         `
-        INSERT INTO tricks(name, description, difficulty_level)
-        VALUES($1, $2, $3)`,
-        [trick.name, trick.description, trick.difficulty_level]
+        INSERT INTO tricks(name, description, difficulty_level, category)
+        VALUES($1, $2, $3, $4)`,
+        [trick.name, trick.description, trick.difficulty_level, trick.category]
       );
     }
 

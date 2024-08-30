@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import "../styles/Recoveries.css"; // Make sure to create this CSS file for styling
+import "../styles/Recoveries.css";
 
 const Recoveries = () => {
   const [recoveries, setRecoveries] = useState([]);
@@ -35,19 +35,24 @@ const Recoveries = () => {
 
   return (
     <div className="recoveries-container">
-      <h1 className="recoveries-title">Recoveries</h1>
+      {/* <h1 className="recoveries-title">Recoveries</h1>
       <div className="tricks-subtitle">
         <p>
           No pain, no gain—but let's keep it to a minimum. Stay limber, stay
           strong!
         </p>
         <p>Create an account to unlock exclusive recovery tips and tricks!</p>
-      </div>
+      </div> */}
 
       <div className="recoveries-list">
         {recoveries.map((recovery) => (
           <div key={recovery.id} className="recovery-card">
-            <h2 className="recovery-name">{recovery.name}</h2>
+            <div className="recovery-header">
+              <div className="recovery-icon">
+                {/* Placeholder for an icon, if applicable */}
+              </div>
+              <h2 className="recovery-name">{recovery.name}</h2>
+            </div>
             <p className="recovery-description">{recovery.description}</p>
             <p className="recovery-date">
               {new Date(recovery.created_at).toLocaleDateString()}
