@@ -26,16 +26,16 @@ const Nav = () => {
             Home
           </Link>
           <Link
-            to="/track-tricks"
-            className={isActive("/track-tricks") ? "active-link" : ""}
+            to="/trick-bank"
+            className={isActive("/trick-bank") ? "active-link" : ""}
           >
-            Tricks
+            Trick Bank
           </Link>
           <Link
-            to="/recoveries"
-            className={isActive("/recoveries") ? "active-link" : ""}
+            to="/warm-ups"
+            className={isActive("/warm-ups") ? "active-link" : ""}
           >
-            Recoveries
+            Warm-Ups
           </Link>
           <Link
             to="/community"
@@ -47,12 +47,6 @@ const Nav = () => {
             Profile
           </Link>
         </nav>
-        <Link to="/login">
-          <button className="login-btn">Login</button>
-        </Link>
-        <Link to="/signup">
-          <button className="login-btn">Sign Up</button>
-        </Link>
         <button className="menu-toggle" onClick={toggleMenu}>
           <span className="menu-icon"></span>
           <span className="menu-icon"></span>
@@ -74,18 +68,18 @@ const Nav = () => {
             Home
           </Link>
           <Link
-            to="/track-tricks"
-            className={isActive("/track-tricks") ? "active-link" : ""}
+            to="/trick-bank"
+            className={isActive("/trick-bank") ? "active-link" : ""}
             onClick={toggleMenu}
           >
-            Track Tricks
+            Trick Bank
           </Link>
           <Link
-            to="/recoveries"
-            className={isActive("/recoveries") ? "active-link" : ""}
+            to="/warm-ups"
+            className={isActive("/warm-ups") ? "active-link" : ""}
             onClick={toggleMenu}
           >
-            Recoveries
+            Warm-Ups
           </Link>
           <Link
             to="/community"
@@ -103,6 +97,9 @@ const Nav = () => {
           </Link>
           <Link to="/login" onClick={toggleMenu}>
             <button className="login-btn">Login</button>
+          </Link>
+          <Link to="/signup" onClick={toggleMenu}>
+            <button className="login-btn">Sign Up</button>
           </Link>
         </div>
       )}

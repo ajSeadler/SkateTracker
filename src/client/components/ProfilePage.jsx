@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { FaUser, FaTimes } from "react-icons/fa"; // Import both icons
 import useUserData from "../hooks/useUserData";
 import ProfileCard from "./ProfileCard";
 import TricksList from "./TricksList";
@@ -6,6 +7,7 @@ import RecoveriesList from "./RecoveriesList";
 import "../styles/ProfilePage.css";
 
 const ProfilePage = () => {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const {
     userData,
     loading,
@@ -19,69 +21,60 @@ const ProfilePage = () => {
     trickGoals,
     trickGoalsLoading,
     trickGoalsError,
-    // Destructure the setTricks function to update the state
-    setTricks,
+    deleteTrick,
   } = useUserData();
 
-  const deleteTrick = async (trickId) => {
-    try {
-      const token = localStorage.getItem("token");
-      const response = await fetch(
-        `http://localhost:3000/api/tricks/user/${trickId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || "Failed to delete trick");
-      }
-
-      // Reload the page to reflect changes
-      window.location.reload();
-    } catch (error) {
-      console.error("Error deleting trick:", error.message);
-    }
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
   };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
 
   return (
-    <div className="profile-page">
-      <div className="sidebar">
-        <ProfileCard
-          userData={userData}
-          tricks={tricks}
-          recoveries={recoveries}
-          trickGoals={trickGoals}
-          trickGoalsLoading={trickGoalsLoading}
-        />
-        {/* <TipsCard /> */}
+    <>
+      <div className="mobile-header">
+        <button className="mobile-header-button" onClick={toggleSidebar}>
+          <FaUser size={24} /> {/* Keep the menu icon here */}
+        </button>
+        <button className="mobile-header-button">Tricks</button>
+        <button className="mobile-header-button">Warm Ups</button>
       </div>
-      <div className="feed">
-        <div className="tricks-list-feed">
-          <TricksList
+      <div className="profile-page">
+        <div className={`sidebar ${sidebarOpen ? "open" : ""}`}>
+          {sidebarOpen && (
+            <button className="close-sidebar-button" onClick={toggleSidebar}>
+              <FaTimes size={24} />
+            </button>
+          )}
+          <ProfileCard
+            userData={userData}
             tricks={tricks}
-            loading={tricksLoading}
-            error={tricksError}
-            deleteTrick={deleteTrick} // Use deleteTrick prop
+            recoveries={recoveries}
+            trickGoals={trickGoals}
+            trickGoalsLoading={trickGoalsLoading}
           />
         </div>
-        <div className="recoveries-list-feed">
-          <RecoveriesList
-            recoveries={recoveries}
-            loading={recoveriesLoading}
-            error={recoveriesError}
-          />
+
+        <div className="feed">
+          <div className="tricks-list-feed">
+            <TricksList
+              tricks={tricks}
+              loading={tricksLoading}
+              error={tricksError}
+              deleteTrick={deleteTrick} // Pass the deleteTrick function correctly
+            />
+          </div>
+          <div className="recoveries-list-feed">
+            <RecoveriesList
+              recoveries={recoveries}
+              loading={recoveriesLoading}
+              error={recoveriesError}
+            />
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

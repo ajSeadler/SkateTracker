@@ -159,11 +159,11 @@ const useUserData = () => {
 
     fetchUserData();
   }, []);
-  const deleteTrick = async (userId, trickId) => {
+  const deleteTrick = async (trickId) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/api/tricks/user/${trickId}`,
+        `http://localhost:3000/api/tricks/user/${trickId}`, // Ensure this endpoint is correct
         {
           method: "DELETE",
           headers: {
@@ -172,13 +172,13 @@ const useUserData = () => {
           },
         }
       );
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
         throw new Error("Failed to delete trick");
       }
-
+  
       // Update the tricks state to remove the deleted trick
       setTricks((prevTricks) =>
         prevTricks.filter((trick) => trick.trick_id !== trickId)
@@ -187,6 +187,7 @@ const useUserData = () => {
       console.error("Error deleting trick:", error.message);
     }
   };
+  
 
   return {
     userData,

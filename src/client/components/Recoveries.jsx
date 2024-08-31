@@ -1,12 +1,17 @@
 import React, { useState, useEffect } from "react";
 import "../styles/Recoveries.css";
 
-const Recoveries = () => {
+const Recoveries = ({ userId }) => {
   const [recoveries, setRecoveries] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [addedRecoveries, setAddedRecoveries] = useState(new Set());
+  const [token, setToken] = useState(null);
 
   useEffect(() => {
+    const storedToken = localStorage.getItem("token");
+    setToken(storedToken);
+
     const fetchRecoveries = async () => {
       try {
         const response = await fetch("/api/recoveries");
@@ -25,25 +30,34 @@ const Recoveries = () => {
     fetchRecoveries();
   }, []);
 
-  if (loading) {
-    return <div className="loading">Loading...</div>;
-  }
+  const addRecoveryToUser = async (recoveryId) => {
+    try {
+      const response = await fetch(`/api/recoveries/user/add`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Ensure token is included if required
+        },
+        body: JSON.stringify({ recoveryId }), // Pass recoveryId in the request body
+      });
+  
+      if (!response.ok) {
+        throw new Error("Failed to add recovery");
+      }
+  
+      const result = await response.json();
+      console.log("Recovery added:", result);
+    } catch (error) {
+      console.error("Error adding recovery:", error);
+    }
+  };
+  
 
-  if (error) {
-    return <div className="error">Error: {error.message}</div>;
-  }
+  if (loading) return <div className="loading">Loading...</div>;
+  if (error) return <div className="error">Error: {error.message}</div>;
 
   return (
     <div className="recoveries-container">
-      {/* <h1 className="recoveries-title">Recoveries</h1>
-      <div className="tricks-subtitle">
-        <p>
-          No pain, no gain—but let's keep it to a minimum. Stay limber, stay
-          strong!
-        </p>
-        <p>Create an account to unlock exclusive recovery tips and tricks!</p>
-      </div> */}
-
       <div className="recoveries-list">
         {recoveries.map((recovery) => (
           <div key={recovery.id} className="recovery-card">
@@ -57,6 +71,17 @@ const Recoveries = () => {
             <p className="recovery-date">
               {new Date(recovery.created_at).toLocaleDateString()}
             </p>
+            <button
+              onClick={() => addRecoveryToUser(recovery.id, recovery.name)}
+              disabled={addedRecoveries.has(recovery.id)} // Disable button if recovery is already added
+            >
+              {addedRecoveries.has(recovery.id)
+                ? "Added"
+                : "Add to My Recoveries"}
+            </button>
+            {addedRecoveries.has(recovery.id) && (
+              <p className="added-message">Recovery added!</p>
+            )}
           </div>
         ))}
       </div>
