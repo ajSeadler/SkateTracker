@@ -151,7 +151,8 @@ const createTables = async () => {
         shipping_address TEXT,
         billing_address TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        points INTEGER DEFAULT 0
       );
 
       CREATE TABLE tricks (
@@ -230,6 +231,7 @@ const insertUsers = async () => {
         phone_number: user.phone_number,
         shipping_address: user.shipping_address,
         billing_address: user.billing_address,
+        points: user.points
       });
     }
     console.log("Users inserted successfully.");
@@ -279,7 +281,7 @@ const insertUserTricksAndRecoveries = async () => {
     // Select a random sample of 5 tricks
     const selectedTrickIds = trickIds
       .sort(() => 0.5 - Math.random())
-      .slice(0, 5);
+      .slice(0, 0);
 
     // Get recovery IDs
     const { rows: recoveries } = await db.query(
@@ -289,7 +291,7 @@ const insertUserTricksAndRecoveries = async () => {
 
     const selectedRecoveryIds = recoveryIds
       .sort(() => 0.5 - Math.random())
-      .slice(0, 0);
+      .slice(0, 4);
 
     // Insert user_tricks with only 5 selected tricks
     for (const userId of userIds) {

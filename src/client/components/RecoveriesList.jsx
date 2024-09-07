@@ -26,7 +26,7 @@ const RecoveriesList = ({ recoveries, loading, error }) => (
         recoveries.map((recovery) => (
           <Card key={recovery.recovery_id} className="feed-card">
             <CardContent>
-              <Typography variant="h6">{recovery.name}</Typography>
+              <Typography variant="h6" style={{color:'#fff', marginBottom:'15px'}}>{recovery.name}</Typography>
               <Typography variant="body1">{recovery.description}</Typography>
               <div className="trick-card-actions">
                 {/* <IconButton size="small" color="primary">
@@ -36,8 +36,9 @@ const RecoveriesList = ({ recoveries, loading, error }) => (
                   size="small"
                   style={{ color: "red" }}
                   // Handle delete click
-                >
+                > 
                   <DeleteOutlineIcon />
+                  
                 </IconButton>
               </div>
               {/* Additional recovery details here */}

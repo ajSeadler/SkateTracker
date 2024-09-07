@@ -10,124 +10,14 @@
   overflow: hidden; /* Prevent outer overflow */
 }
 
-
-
-/* Sidebar styles for mobile */
+/* Sidebar Styling */
 .sidebar {
-  position: fixed;
-  top: 0;
-  left: -100%; /* Hide the sidebar on mobile initially */
-  width: 85%; /* Wider sidebar */
-  height: 100%;
-  background-color: #202225 !important;
-  transition: left 0.3s ease-in-out;
-  z-index: 99;
-  overflow-y: auto; /* Enable vertical scrolling */
+  position: static; /* Default position */
+  width: 300px; /* Sidebar width on desktop */
+  height: auto;
+  left: 0; /* Ensure sidebar is always visible */
+  overflow-y: auto; /* Enable vertical scrolling if needed */
 }
-
-/* When sidebar is open */
-.sidebar.open {
-  left: 0;
-}
-
-/* Button to toggle sidebar */
-.sidebar-toggle {
-  position: absolute;
-  top: 12%;
-  right: 10px; /* Positioned to the far right */
-  z-index: 100;
-  background-color: #8e2de2;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-/* Media query for mobile screens */
-@media (max-width: 768px) {
-  .sidebar-toggle {
-    display: block; /* Show the toggle button on mobile */
-  }
-
-  .sidebar {
-    width: 85%; /* Wider sidebar on mobile */
-  }
-
-  .feed {
-    margin-left: 0; /* Ensure feed takes full width when sidebar is hidden */
-    position: relative; /* Ensure positioning context for the toggle button */
-  }
-}
-
-.mobile-header {
-  display: flex;
-  flex-direction: row;
-  margin: 5px;
-  justify-content: center;
-  gap: 20px;
-}
-
-.mobile-header-button {
-  padding: 10px;
-  font-weight: bolder;
-  border-radius: 15%;
-  background-color: #8e2de2;
-  color: #fff;
-}
-
-
-/* Desktop styles */
-@media (min-width: 769px) {
-  .sidebar {
-    position: static; /* Make sidebar static on desktop */
-    width: 300px; /* Wider sidebar on desktop */
-    height: auto;
-    left: 0; /* Ensure sidebar is always visible */
-    overflow-y: auto; /* Enable vertical scrolling if needed */
-  }
-  .mobile-header {
-    display: none;
-  }
-
-  .feed {
-    margin-left: 0px; /* No left margin */
-  }
-
-  .sidebar-toggle {
-    display: none; /* Hide toggle button on desktop */
-  }
-}
-
-.close-sidebar-button {
-  position: absolute;
-  top: 10px; /* Adjust the top positioning */
-  right: 10px; /* Adjust the right positioning */
-  background: transparent;
-  border: none;
-  color: #fff;
-  cursor: pointer;
-}
-
-.close-sidebar-button:hover {
-  color: #ff0000; /* Optional: change color on hover */
-}
-
-/* Mobile-specific styles */
-@media (max-width: 768px) {
-  .close-sidebar-button {
-    display: block;
-  }
-}
-
-@media (min-width: 769px) {
-  .close-sidebar-button {
-    display: none;
-  }
-}
-
-
-
 
 /* Feed Styling */
 .feed {
@@ -141,6 +31,29 @@
   background-color: #18191a;
   max-height: 100%; /* Ensure the feed takes up the full height */
 }
+
+/* Media Query for Mobile Devices */
+@media (max-width: 768px) {
+  .profile-page {
+    flex-direction: column; /* Stack sidebar and feed vertically */
+    height: 100vh; /* Adjust height for content */
+  }
+
+  .sidebar {
+    width: 100%; /* Sidebar takes full width on mobile */
+    height: auto; /* Adjust height */
+    overflow-y: none;
+    margin-bottom: 20px; /* Add space between sidebar and feed */
+  }
+
+  .feed {
+    grid-template-columns: 1fr; /* Feed cards take full width */
+    width: 100%; /* Feed takes full width */
+  }
+
+  /* Adjust any other components as needed for mobile view */
+}
+
 
 .feed-heading {
   margin-bottom: 5% !important;
@@ -167,7 +80,6 @@
   padding: 20px; /* Add padding inside the card */
 }
 
-/* Profile Name and Details */
 .avatar-container {
   display: flex;
   justify-content: left;
@@ -179,6 +91,7 @@
   height: 100px !important;
   border: 4px solid #fff; /* Optional: adds a border around the avatar */
 }
+
 .profile-name {
   color: #fff; /* Use purple for profile name */
   font-weight: bolder !important;
@@ -240,9 +153,7 @@
   font-size: 1rem; /* Set a consistent font size */
 }
 
-/* Goals.css */
-
-/* Container for the whole Goals section */
+/* Goals Container */
 .goals-container {
   background-color: #1e1e1e; /* Dark background for consistency with dark theme */
   color: #e0e0e0; /* Light text color for contrast */
@@ -272,7 +183,6 @@
   transition: background-color 0.3s ease;
 }
 
-/* Hover effect for goal items */
 .goal-item:hover {
   background-color: #333333; /* Slightly lighter on hover */
 }
@@ -283,13 +193,11 @@
   color: #fff; /* White text for contrast */
 }
 
-/* Text styling within goal items */
 .goal-item p {
   margin: 5px 0;
   font-size: 1rem;
 }
 
-/* Bold text for labels */
 .goal-item strong {
   color: #f5f5f5; /* Lighter color for labels */
 }
@@ -330,7 +238,6 @@
 }
 
 .tricks-card h6 {
-  /* color: #8e2de2;  */
   color: #fff !important;
   font-size: 1.4rem; /* Slightly larger font size */
 }
@@ -354,7 +261,7 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
   height: auto;
   padding: 15px !important;
-  width: 100% !important; /* Make sure each card takes full width of the grid cell */
+  width: 100% !important; /* Make sure each card is 100% of its container */
   box-sizing: border-box;
   transition: transform 0.3s ease-in-out;
 }
@@ -363,36 +270,14 @@
   transform: translateY(-5px); /* Subtle hover effect */
 }
 
-.feed-card .MuiCardContent-root {
-  padding: 16px;
-}
-
-.feed-card h6 {
-  color: #fff; /* Purple for titles */
-  margin-bottom: 0px;
-  font-size: 1.4rem; /* Slightly larger font size */
+.feed-card-title {
+  color: #ffffff !important;
+  text-decoration: underline;
+  font-size: 1.6rem !important;
+  margin-bottom: 10px !important;
 }
 
 .feed-card p {
-  color: #b0b3b8; /* Slightly lighter text color for body text */
-  font-size: 1rem; /* Set a consistent font size */
-}
-
-@media (max-width: 768px) {
-  .feed {
-    grid-template-columns: 1fr; /* Switch to a single column layout */
-    gap: 10px; /* Reduce the gap between items */
-    margin: auto !important;
-    padding: 10px; /* Adjust padding for smaller screens */
-  }
-
-  .feed-card {
-    max-width: 100%; /* Ensure cards take up the full width of the container */
-    margin: auto !important;
-  }
-
-  .tricks-cont {
-    margin: auto;
-    gap: 2vh;
-  }
+  color: #b0b3b8 !important; /* Slightly lighter text color */
+  font-size: 1rem !important; /* Set a consistent font size */
 }

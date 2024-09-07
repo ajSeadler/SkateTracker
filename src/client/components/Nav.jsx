@@ -46,6 +46,12 @@ const Nav = () => {
           <Link to="/me" className={isActive("/me") ? "active-link" : ""}>
             Profile
           </Link>
+          <Link to="/login" >
+            <button className="login-btn">Login</button>
+          </Link>
+          <Link to="/signup">
+            <button className="login-btn">Sign Up</button>
+          </Link>
         </nav>
         <button className="menu-toggle" onClick={toggleMenu}>
           <span className="menu-icon"></span>

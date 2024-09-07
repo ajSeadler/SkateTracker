@@ -57,8 +57,9 @@
   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
 }
 
-.trick-header {
+.trick-card-header {
   display: flex;
+  color: #fff;
   align-items: center;
   gap: 10px;
   margin-bottom: 15px;

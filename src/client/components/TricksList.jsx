@@ -54,7 +54,7 @@ const TricksList = ({ tricks, loading, error, deleteTrick }) => (
                   onClick={() => deleteTrick(trick.trick_id)} // Correctly reference trickId
                 >
                   <DeleteOutlineIcon />
-                  <Typography>Delete</Typography>
+                  
                 </IconButton>
               </div>
             </CardContent>

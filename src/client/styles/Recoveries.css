@@ -53,6 +53,7 @@
 .recovery-header {
   display: flex;
   align-items: center;
+  color: #fff;
   gap: 10px; /* Match gap with trick-header */
   margin-bottom: 15px;
 }
@@ -60,7 +61,7 @@
 .recovery-name {
   font-size: 1.85rem; /* Match font size with trick-name */
   font-weight: bold;
-  color: #ffffff;
+  color: #fff !important;
 }
 
 .recovery-description {

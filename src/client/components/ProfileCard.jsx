@@ -1,8 +1,9 @@
-// components/ProfileCard.js
-import React from "react";
-import { Card, CardContent, Typography, Avatar, Divider } from "@mui/material";
+import React, { useEffect, useState } from "react";
+import { Card, CardContent, Typography, Avatar, Divider, LinearProgress } from "@mui/material";
+import { Star } from "@mui/icons-material";
 import Goals from "./Goals";
 import "../styles/ProfilePage.css";
+
 
 const ProfileCard = ({
   userData,
@@ -11,9 +12,28 @@ const ProfileCard = ({
   trickGoals,
   trickGoalsLoading,
 }) => {
+  const [totalTricks, setTotalTricks] = useState(0);
+
+  useEffect(() => {
+    // Fetch total number of tricks from the API
+    const fetchTotalTricks = async () => {
+      try {
+        const response = await fetch('/api/tricks');
+        const tricksData = await response.json();
+        setTotalTricks(tricksData.length);
+      } catch (error) {
+        console.error('Error fetching total tricks:', error);
+      }
+    };
+
+    fetchTotalTricks();
+  }, []);
+
   if (!userData) {
     return <Typography variant="body1">Loading...</Typography>;
   }
+
+  const masteredPercentage = totalTricks > 0 ? (userData.points / totalTricks) * 100 : 0;
 
   return (
     <>
@@ -41,12 +61,27 @@ const ProfileCard = ({
               </Typography>
 
               <Typography variant="body1" className="profile-detail">
-                <strong>Tricks Mastered:</strong>{" "}
-                {tricks && tricks.length > 0 ? tricks.length : 0}
-              </Typography>
-              <Typography variant="body1" className="profile-detail">
-                <strong>Recoveries Tracked:</strong>{" "}
-                {recoveries && recoveries.length > 0 ? recoveries.length : 0}
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <Star style={{color:'yellow'}} />
+                  <strong style={{ marginLeft: '8px' }}>Tricks Mastered</strong>
+                </div>
+                <div style={{ marginTop: '8px' }}>
+                <LinearProgress
+    variant="determinate"
+    value={masteredPercentage}
+    sx={{
+      height: 10,
+      borderRadius: 5,
+      backgroundColor: '#e0e0e0', // The color of the unfilled part of the bar
+      '& .MuiLinearProgress-bar': {
+        backgroundColor: 'green', // The filled portion color (green)
+      },
+    }}
+  />
+                  <Typography variant="body2" color="textPrimary" style={{ marginTop: '4px', color: '#fff' }}>
+                    {userData.points} / {totalTricks} Tricks
+                  </Typography>
+                </div>
               </Typography>
             </div>
             <Divider className="profile-divider" />

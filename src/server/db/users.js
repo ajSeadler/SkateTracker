@@ -85,6 +85,11 @@ const getUser = async ({ email, password }) => {
     }
 };
 
+const updateUserPoints = async (id, points) => {
+    const query = 'UPDATE Users SET points = points + $1 WHERE id = $2';
+    await db.query(query, [points, id]);
+};
+
 const getAllUsers = async () => {
     try {
         const { rows } = await db.query('SELECT * FROM users');
@@ -150,5 +155,6 @@ module.exports = {
     getUserById,
     updateUserEmail,
     updateUserName,
-    updateUserPassword
+    updateUserPassword, 
+    updateUserPoints
 };

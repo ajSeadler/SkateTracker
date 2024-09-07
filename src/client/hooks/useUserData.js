@@ -183,10 +183,17 @@ const useUserData = () => {
       setTricks((prevTricks) =>
         prevTricks.filter((trick) => trick.trick_id !== trickId)
       );
+  
+      // Update the userData to decrement the points by 1
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        points: prevUserData.points - 1,
+      }));
     } catch (error) {
       console.error("Error deleting trick:", error.message);
     }
   };
+  
   
 
   return {
