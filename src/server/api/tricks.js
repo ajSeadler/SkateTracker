@@ -5,6 +5,7 @@ const {
   getAllTricks,
   deleteTrick,
   addUserTrick,
+  updateTrickStatus
 } = require("../db");
 const tricksRouter = express.Router();
 
@@ -50,6 +51,26 @@ tricksRouter.post("/user/add", requireUser, async (req, res) => {
     } else {
       res.status(500).json({ error: "Internal Server Error" });
     }
+  }
+});
+
+tricksRouter.patch("/user/status", requireUser, async (req, res) => {
+  const { trickId, status } = req.body;
+
+  if (!['learning', 'mastered'].includes(status)) {
+    return res.status(400).json({ error: "Invalid status" });
+  }
+
+  try {
+    const result = await updateTrickStatus(req.user.id, trickId, status);
+    if (result) {
+      res.json({ message: "Trick status updated successfully", data: result });
+    } else {
+      res.status(404).json({ error: "Trick not found for this user" });
+    }
+  } catch (error) {
+    console.error("Error updating trick status:", error);
+    res.status(500).json({ error: "Internal Server Error" });
   }
 });
 

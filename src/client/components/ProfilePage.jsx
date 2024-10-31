@@ -20,6 +20,7 @@ const ProfilePage = () => {
     trickGoalsLoading,
     trickGoalsError,
     deleteTrick,
+    updateTrickStatus
   } = useUserData();
 
   if (loading) return <p>Loading...</p>;
@@ -44,16 +45,17 @@ const ProfilePage = () => {
               tricks={tricks}
               loading={tricksLoading}
               error={tricksError}
-              deleteTrick={deleteTrick} // Pass the deleteTrick function correctly
+              deleteTrick={deleteTrick}
+              updateTrickStatus={updateTrickStatus} 
             />
           </div>
-          <div className="recoveries-list-feed">
+          {/* <div className="recoveries-list-feed">
             <RecoveriesList
               recoveries={recoveries}
               loading={recoveriesLoading}
               error={recoveriesError}
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </>

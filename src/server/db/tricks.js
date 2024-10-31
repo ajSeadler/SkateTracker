@@ -13,26 +13,32 @@ const getAllTricks = async () => {
 
 // Retrieve all tricks for a specific user
 const getAllTricksByUserId = async (userId) => {
-  if (isNaN(userId)) {
-    throw new Error("Invalid user ID");
-  }
+  const query = `
+    SELECT 
+      t.trick_id,
+      t.name,
+      t.category,
+      t.difficulty_level,
+      ut.status,
+      t.created_at,
+      t.updated_at
+    FROM 
+      tricks t
+    JOIN 
+      user_tricks ut ON t.trick_id = ut.trick_id
+    WHERE 
+      ut.user_id = $1
+  `;
 
   try {
-    const { rows } = await db.query(
-      `
-      SELECT tricks.* 
-      FROM tricks
-      JOIN user_tricks ON tricks.trick_id = user_tricks.trick_id
-      WHERE user_tricks.user_id = $1
-      `,
-      [userId]
-    );
-    return rows; // Returns an array of trick objects associated with the user
+    const { rows } = await db.query(query, [userId]);
+    return rows;
   } catch (error) {
-    console.error("Error fetching tricks for user:", error);
+    console.error("Error fetching tricks by user ID:", error);
     throw error;
   }
 };
+
 
 // Verify if a trick exists for a specific user
 const verifyTrickForUser = async (userId, trickId) => {
@@ -52,6 +58,29 @@ const verifyTrickForUser = async (userId, trickId) => {
     return rowCount > 0;
   } catch (error) {
     console.error("Error verifying trick for user:", error);
+    throw error;
+  }
+};
+
+
+const updateTrickStatus = async (userId, trickId, status) => {
+  try {
+    if (isNaN(userId) || isNaN(trickId)) {
+      throw new Error("Invalid user ID or trick ID");
+    }
+
+    // Update the trick status in the user_tricks table
+    const updateQuery = `
+      UPDATE user_tricks
+      SET status = $3
+      WHERE user_id = $1 AND trick_id = $2
+      RETURNING *;
+    `;
+    const result = await db.query(updateQuery, [userId, trickId, status]);
+
+    return result.rowCount > 0 ? result.rows[0] : null;
+  } catch (error) {
+    console.error("Error updating trick status:", error);
     throw error;
   }
 };
@@ -133,4 +162,5 @@ module.exports = {
   getAllTricksByUserId,
   deleteTrick,
   addUserTrick,
+  updateTrickStatus
 };

@@ -184,6 +184,40 @@ const tricksData = [
     category: "Grinds",
   },
 
+  {
+    trick_id: 33,
+    name: "Ginger Grind",
+    description:
+      "A more technical grind where the front truck slides on the ledge or rail while the back truck is lifted and rotated.",
+    difficulty_level: "Advanced",
+    category: "Grinds",
+  },
+  {
+    trick_id: 32,
+    name: "Crooked Grind",
+    description:
+      "A grind where the front truck slides on the ledge or rail at an angle, while the back truck is off the obstacle.",
+    difficulty_level: "Beginner",
+    category: "Grinds",
+  },
+  {
+    trick_id: 34,
+    name: "Tailslide",
+    description:
+      "A grind where the tail of the board slides along the ledge or rail while the front of the board is lifted.",
+    difficulty_level: "Advanced",
+    category: "Grinds",
+  },
+
+  {
+    trick_id: 30,
+    name: "50-50 Grind",
+    description:
+      "A basic grind where both trucks slide along a ledge or rail, with the board parallel to the obstacle.",
+    difficulty_level: "Beginner",
+    category: "Grinds",
+  },
+
   // New Transition Tricks
   {
     trick_id: 24,
@@ -233,6 +267,8 @@ const tricksData = [
     difficulty_level: "Beginner",
     category: "Transition",
   },
+
+ 
 ];
 
 module.exports = tricksData;

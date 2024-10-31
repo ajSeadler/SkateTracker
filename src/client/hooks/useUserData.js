@@ -71,6 +71,7 @@ const useUserData = () => {
         }
 
         const tricks = await response.json();
+        console.log('Fetched Tricks:', tricks);
         setTricks(tricks);
       } catch (error) {
         setTricksError(error.message);
@@ -193,6 +194,36 @@ const useUserData = () => {
       console.error("Error deleting trick:", error.message);
     }
   };
+
+  const updateTrickStatus = async (trickId, newStatus) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3000/api/tricks/user/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ trickId, status: newStatus }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+        throw new Error("Failed to update trick status");
+      }
+  
+      // Optionally, update the tricks state to reflect the new status
+      setTricks((prevTricks) =>
+        prevTricks.map((trick) =>
+          trick.trick_id === trickId ? { ...trick, status: newStatus } : trick
+        )
+      );
+    } catch (error) {
+      console.error("Error updating trick status:", error.message);
+    }
+  };
+  
   
   
 
@@ -213,6 +244,7 @@ const useUserData = () => {
     recoveryGoalsLoading,
     recoveryGoalsError,
     deleteTrick,
+    updateTrickStatus
   };
 };
 

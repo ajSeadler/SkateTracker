@@ -31,19 +31,20 @@
 
 .nav a:hover,
 .nav a.active-link {
-  color: #8e2de2; /* Tech purple for hover and active state */
+  color: #416e67;
+  /* Tech purple for hover and active state */
 }
 
 .login-btn {
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #8e2de2;
+  background-color: #416e67;
   color: #ffffff;
   margin-left: 20px;
 }
 
 .login-btn:hover {
-  background-color: #6a1b9a;
+  background-color: #b79ec7;
 }
 
 /* Mobile Navigation Styles */
@@ -98,7 +99,8 @@
 
 .mobile-menu a:hover,
 .mobile-menu a.active-link {
-  color: #8e2de2; /* Tech purple for hover and active state */
+  color: #8e2de2;
+  /* Tech purple for hover and active state */
 }
 
 /* Responsive Navigation */
