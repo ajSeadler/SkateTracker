@@ -31,7 +31,7 @@ const Tricks = ({ userId }) => {
     fetchTricks();
   }, []); // Empty dependency array ensures this runs only once
 
-  const addTrickToUser = async (trickId) => {
+  const addTrickToUser = async (trickId, trickName) => {
     if (!token) {
       alert("User not authenticated. Please log in.");
       return;
@@ -52,36 +52,54 @@ const Tricks = ({ userId }) => {
       }
 
       const result = await response.json();
-      alert(result.message || "Trick added successfully");
 
       // Update the UI by marking the trick as added
       setAddedTricks((prev) => new Set(prev).add(trickId));
     } catch (error) {
       console.error("Error adding trick:", error);
-      alert("There was an error adding the trick");
+      // Handle error appropriately
     }
   };
 
   if (loading) return <div className="loading">Loading...</div>;
   if (error) return <div className="error">Error: {error.message}</div>;
 
+  // Organize tricks by category
+  const categorizedTricks = tricks.reduce((acc, trick) => {
+    if (!acc[trick.category]) {
+      acc[trick.category] = [];
+    }
+    acc[trick.category].push(trick);
+    return acc;
+  }, {});
+
   return (
     <div className="tricks-container">
-      <h1 className="tricks-title">Tricks To Track</h1>
-      <div className="tricks-list">
-        {tricks.map((trick) => (
-          <div key={trick.trick_id} className="trick-card">
-            <h2 className="trick-name">{trick.name}</h2>
-            <p className="trick-description">{trick.description}</p>
-            <button
-              onClick={() => addTrickToUser(trick.trick_id)}
-              disabled={addedTricks.has(trick.trick_id)} // Disable button if trick is already added
-            >
-              {addedTricks.has(trick.trick_id) ? "Added" : "Add to My Tricks"}
-            </button>
+      {Object.entries(categorizedTricks).map(([category, tricks]) => (
+        <div key={category} className="category-section">
+          <h2 className="category-title">{category}</h2>
+          <div className="tricks-list">
+            {tricks.map((trick) => (
+              <div key={trick.trick_id} className="trick-card">
+                <h3 className="trick-name">{trick.name}</h3>
+                <p className="trick-description">{trick.difficulty_level}</p>
+                <p className="trick-description">{trick.description}</p>
+                <button
+                  onClick={() => addTrickToUser(trick.trick_id, trick.name)}
+                  disabled={addedTricks.has(trick.trick_id)} // Disable button if trick is already added
+                >
+                  {addedTricks.has(trick.trick_id)
+                    ? "Added"
+                    : "Add to My Tricks"}
+                </button>
+                {addedTricks.has(trick.trick_id) && (
+                  <p className="added-message">Trick added!</p>
+                )}
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
+        </div>
+      ))}
     </div>
   );
 };

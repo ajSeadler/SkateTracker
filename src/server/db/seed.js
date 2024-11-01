@@ -6,7 +6,7 @@ const recoveriesData = require("./recoveriesdata");
 // Sample users
 const users = [
   {
-    name: "speedD3mon69",
+    name: "speedD3mon",
     email: "aj@a.com",
     password: "pass",
     first_name: "AJ",
@@ -151,7 +151,8 @@ const createTables = async () => {
         shipping_address TEXT,
         billing_address TEXT,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        points INTEGER DEFAULT 0
       );
 
       CREATE TABLE tricks (
@@ -159,6 +160,7 @@ const createTables = async () => {
         name VARCHAR(255) UNIQUE,
         description TEXT,
         difficulty_level VARCHAR(50),
+        category VARCHAR(50),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -168,6 +170,7 @@ const createTables = async () => {
         user_id INTEGER REFERENCES users(id),
         trick_id INTEGER REFERENCES tricks(trick_id),
         learned_date TIMESTAMP,
+        status VARCHAR(50) CHECK (status IN ('learning', 'mastered')) DEFAULT 'learning',
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
@@ -217,6 +220,7 @@ const createTables = async () => {
   }
 };
 
+
 const insertUsers = async () => {
   try {
     for (const user of users) {
@@ -229,6 +233,7 @@ const insertUsers = async () => {
         phone_number: user.phone_number,
         shipping_address: user.shipping_address,
         billing_address: user.billing_address,
+        points: user.points
       });
     }
     console.log("Users inserted successfully.");
@@ -243,9 +248,9 @@ const insertInitialData = async () => {
     for (const trick of tricksData) {
       await db.query(
         `
-        INSERT INTO tricks(name, description, difficulty_level)
-        VALUES($1, $2, $3)`,
-        [trick.name, trick.description, trick.difficulty_level]
+        INSERT INTO tricks(name, description, difficulty_level, category)
+        VALUES($1, $2, $3, $4)`,
+        [trick.name, trick.description, trick.difficulty_level, trick.category]
       );
     }
 
@@ -278,25 +283,23 @@ const insertUserTricksAndRecoveries = async () => {
     // Select a random sample of 5 tricks
     const selectedTrickIds = trickIds
       .sort(() => 0.5 - Math.random())
-      .slice(0, 5);
+      .slice(0, 0); // Ensure you are selecting 5 tricks
 
     // Get recovery IDs
-    const { rows: recoveries } = await db.query(
-      "SELECT recovery_id FROM recoveries"
-    );
+    const { rows: recoveries } = await db.query("SELECT recovery_id FROM recoveries");
     const recoveryIds = recoveries.map((recovery) => recovery.recovery_id);
 
     const selectedRecoveryIds = recoveryIds
       .sort(() => 0.5 - Math.random())
-      .slice(0, 0);
+      .slice(0, 4);
 
-    // Insert user_tricks with only 5 selected tricks
+    // Insert user_tricks with status
     for (const userId of userIds) {
       for (const trickId of selectedTrickIds) {
         await db.query(
           `
-          INSERT INTO user_tricks(user_id, trick_id, learned_date)
-          VALUES($1, $2, NOW())`,
+          INSERT INTO user_tricks(user_id, trick_id, learned_date, status)
+          VALUES($1, $2, NOW(), 'learning')`,
           [userId, trickId]
         );
       }
@@ -319,6 +322,7 @@ const insertUserTricksAndRecoveries = async () => {
     console.error("Error inserting user tricks and recoveries:", error);
   }
 };
+
 
 const insertTrickGoals = async () => {
   try {

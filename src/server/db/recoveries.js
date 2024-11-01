@@ -26,7 +26,21 @@ const getAllRecoveriesByUserId = async (userId) => {
   }
 };
 
+  const addUserRecovery = async (userId, recoveryId) => {
+    try {
+      const query = `INSERT INTO user_recoveries (user_id, recovery_id)
+      VALUES ($1, $2)
+      RETURNING *;`;
+      const {rows} = await db.query(query, [userId, recoveryId]);
+      return rows[0];
+    } catch (error) {
+      console.error("Error adding recovery for user ID:", userId, error);
+      throw error;
+    }
+  };
+
 module.exports = {
   getAllRecoveries,
   getAllRecoveriesByUserId,
+  addUserRecovery
 };

@@ -4,45 +4,47 @@
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  background-color: #1e1e1e; /* Dark background for the header */
+  background-color: #1e1e1e;
 }
 
 .logo a {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #fff; /* Tech purple for logo */
+  color: #fff;
   text-decoration: none;
 }
 
 .nav {
   display: flex;
   align-items: center;
-  justify-content: center; /* Center the links on larger screens */
-  flex-grow: 1; /* Ensure nav takes available space */
+  justify-content: center;
+  flex-grow: 1;
 }
 
 .nav a {
   margin-left: 20px;
   font-weight: bold;
   font-size: 1rem;
-  color: #e0e0e0; /* Light gray for navigation links */
+  color: #e0e0e0;
   text-decoration: none;
 }
 
-.nav a:hover {
-  color: #8e2de2; /* Tech purple for hover state */
+.nav a:hover,
+.nav a.active-link {
+  color: #416e67;
+  /* Tech purple for hover and active state */
 }
 
 .login-btn {
   padding: 8px 16px;
   border-radius: 20px;
-  background-color: #8e2de2; /* Tech purple for button */
-  color: #ffffff; /* White text for contrast */
+  background-color: #416e67;
+  color: #ffffff;
   margin-left: 20px;
 }
 
 .login-btn:hover {
-  background-color: #6a1b9a; /* Slightly darker purple on hover */
+  background-color: #b79ec7;
 }
 
 /* Mobile Navigation Styles */
@@ -65,18 +67,17 @@
   transition: 0.3s;
 }
 
-/* Mobile menu modal */
 .mobile-menu {
-  display: none;
+  /* display: none; */
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9); /* Dark semi-transparent background */
+  background-color: rgba(0, 0, 0, 0.9);
   color: #fff;
   padding: 20px;
-  z-index: 1000; /* Ensure it's on top */
+  z-index: 1000;
   overflow-y: auto;
   align-items: center;
   justify-content: center;
@@ -92,19 +93,21 @@
   display: block;
   margin: 15px 0;
   font-size: 1.5rem;
-  color: #e0e0e0; /* Light gray for links */
+  color: #e0e0e0;
   text-decoration: none;
 }
 
-.mobile-menu a:hover {
-  color: #8e2de2; /* Tech purple for hover state */
+.mobile-menu a:hover,
+.mobile-menu a.active-link {
+  color: #8e2de2;
+  /* Tech purple for hover and active state */
 }
 
 /* Responsive Navigation */
 @media (max-width: 768px) {
   .header {
     padding: 10px 20px;
-    position: relative; /* Required for positioning the mobile menu */
+    position: relative;
   }
 
   .logo a {
@@ -112,7 +115,7 @@
   }
 
   .nav {
-    display: none; /* Hide nav links on mobile */
+    display: none;
   }
 
   .menu-toggle {

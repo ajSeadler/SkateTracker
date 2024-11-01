@@ -1,6 +1,7 @@
 // src/pages/HomePage.js
 import React from "react";
 import HeroBackground from "../components/HeroBackground";
+import { Link } from "react-router-dom";
 import "../styles/HomePage.css";
 
 const HomePage = () => {
@@ -15,11 +16,12 @@ const HomePage = () => {
           <div className="hero-content">
             <h1>Welcome To SkateTracker</h1>
             <p>
-              Track every trick you’ve learned and monitor your recovery
-              progress with personalized exercises.
+              Track every trick you’ve ever learned, then push yourself to learn more.
             </p>
             <div className="hero-buttons">
-              <button className="cta-btn">Get Started</button>
+            <Link to="/track-tricks">
+  <button className="cta-btn">Get Started</button>
+</Link>
               <button className="secondary-btn">Learn More</button>
             </div>
           </div>

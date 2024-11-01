@@ -1,33 +1,58 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import "../styles/Nav.css";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const location = useLocation(); // Get the current location
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  // Function to check if the link is active
+  const isActive = (path) => location.pathname === path;
+
   return (
     <>
       <header className="header">
         <div className="logo">
-          <Link to="/">SkateTracker</Link>
+          <Link to="/" className={isActive("/") ? "active-link" : ""}>
+            SkateTracker
+          </Link>
         </div>
         <nav className="nav">
-          <Link to="/">Home</Link>
-          <Link to="/track-tricks">Tricks</Link>
-          <Link to="/recoveries">Recoveries</Link>
-          <Link to="/community">Community</Link>
-          <Link to="/me">Profile</Link>
+          <Link to="/" className={isActive("/") ? "active-link" : ""}>
+            Home
+          </Link>
+          <Link
+            to="/trick-bank"
+            className={isActive("/trick-bank") ? "active-link" : ""}
+          >
+            Trick Bank
+          </Link>
+          <Link
+            to="/warm-ups"
+            className={isActive("/warm-ups") ? "active-link" : ""}
+          >
+            Warm-Ups
+          </Link>
+          <Link
+            to="/community"
+            className={isActive("/community") ? "active-link" : ""}
+          >
+            Community
+          </Link>
+          <Link to="/me" className={isActive("/me") ? "active-link" : ""}>
+            Profile
+          </Link>
+          <Link to="/login" >
+            <button className="login-btn">Login</button>
+          </Link>
+          <Link to="/signup">
+            <button className="login-btn">Sign Up</button>
+          </Link>
         </nav>
-        <Link to="/login">
-          <button className="login-btn">Login</button>
-        </Link>
-        <Link to="/signup">
-          <button className="login-btn">Sign Up</button>
-        </Link>
         <button className="menu-toggle" onClick={toggleMenu}>
           <span className="menu-icon"></span>
           <span className="menu-icon"></span>
@@ -41,23 +66,46 @@ const Nav = () => {
             <span className="menu-icon"></span>
             <span className="menu-icon"></span>
           </button>
-          <Link to="/" onClick={toggleMenu}>
+          <Link
+            to="/"
+            className={isActive("/") ? "active-link" : ""}
+            onClick={toggleMenu}
+          >
             Home
           </Link>
-          <Link to="/track-tricks" onClick={toggleMenu}>
-            Track Tricks
+          <Link
+            to="/trick-bank"
+            className={isActive("/trick-bank") ? "active-link" : ""}
+            onClick={toggleMenu}
+          >
+            Trick Bank
           </Link>
-          <Link to="/recoveries" onClick={toggleMenu}>
-            Recoveries
+          <Link
+            to="/warm-ups"
+            className={isActive("/warm-ups") ? "active-link" : ""}
+            onClick={toggleMenu}
+          >
+            Warm-Ups
           </Link>
-          <Link to="/community" onClick={toggleMenu}>
+          <Link
+            to="/community"
+            className={isActive("/community") ? "active-link" : ""}
+            onClick={toggleMenu}
+          >
             Community
           </Link>
-          <Link to="/me" onClick={toggleMenu}>
+          <Link
+            to="/me"
+            className={isActive("/me") ? "active-link" : ""}
+            onClick={toggleMenu}
+          >
             Profile
           </Link>
           <Link to="/login" onClick={toggleMenu}>
             <button className="login-btn">Login</button>
+          </Link>
+          <Link to="/signup" onClick={toggleMenu}>
+            <button className="login-btn">Sign Up</button>
           </Link>
         </div>
       )}

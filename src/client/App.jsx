@@ -19,8 +19,8 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/me" element={<ProfilePage />} />
-          <Route path="/recoveries" element={<Recoveries />} />
-          <Route path="/track-tricks" element={<Tricks />} />
+          <Route path="/warm-ups" element={<Recoveries />} />
+          <Route path="/trick-bank" element={<Tricks />} />
           <Route path="/community" element={<Community />} />
         </Routes>
       </div>

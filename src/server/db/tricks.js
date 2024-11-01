@@ -13,26 +13,32 @@ const getAllTricks = async () => {
 
 // Retrieve all tricks for a specific user
 const getAllTricksByUserId = async (userId) => {
-  if (isNaN(userId)) {
-    throw new Error("Invalid user ID");
-  }
+  const query = `
+    SELECT 
+      t.trick_id,
+      t.name,
+      t.category,
+      t.difficulty_level,
+      ut.status,
+      t.created_at,
+      t.updated_at
+    FROM 
+      tricks t
+    JOIN 
+      user_tricks ut ON t.trick_id = ut.trick_id
+    WHERE 
+      ut.user_id = $1
+  `;
 
   try {
-    const { rows } = await db.query(
-      `
-      SELECT tricks.* 
-      FROM tricks
-      JOIN user_tricks ON tricks.trick_id = user_tricks.trick_id
-      WHERE user_tricks.user_id = $1
-      `,
-      [userId]
-    );
-    return rows; // Returns an array of trick objects associated with the user
+    const { rows } = await db.query(query, [userId]);
+    return rows;
   } catch (error) {
-    console.error("Error fetching tricks for user:", error);
+    console.error("Error fetching tricks by user ID:", error);
     throw error;
   }
 };
+
 
 // Verify if a trick exists for a specific user
 const verifyTrickForUser = async (userId, trickId) => {
@@ -56,48 +62,105 @@ const verifyTrickForUser = async (userId, trickId) => {
   }
 };
 
-// Update the deleteTrick function
+
+const updateTrickStatus = async (userId, trickId, status) => {
+  try {
+    if (isNaN(userId) || isNaN(trickId)) {
+      throw new Error("Invalid user ID or trick ID");
+    }
+
+    // Update the trick status in the user_tricks table
+    const updateQuery = `
+      UPDATE user_tricks
+      SET status = $3
+      WHERE user_id = $1 AND trick_id = $2
+      RETURNING *;
+    `;
+    const result = await db.query(updateQuery, [userId, trickId, status]);
+
+    return result.rowCount > 0 ? result.rows[0] : null;
+  } catch (error) {
+    console.error("Error updating trick status:", error);
+    throw error;
+  }
+};
+
 const deleteTrick = async (userId, trickId) => {
   try {
     if (isNaN(userId) || isNaN(trickId)) {
       throw new Error("Invalid user ID or trick ID");
     }
 
-    const result = await db.query(
-      `
+    // Delete the trick from the user_tricks table
+    const deleteQuery = `
       DELETE FROM user_tricks
       WHERE user_id = $1 AND trick_id = $2
       RETURNING *;
-      `,
-      [userId, trickId]
-    );
+    `;
+    const deleteResult = await db.query(deleteQuery, [userId, trickId]);
 
-    return result.rowCount > 0; // Return true if a row was deleted
+    if (deleteResult.rowCount > 0) {
+      // Decrement the user's points if the trick was successfully deleted
+      const updatePointsQuery = `
+        UPDATE users
+        SET points = points - 1
+        WHERE id = $1
+        RETURNING points;
+      `;
+      const pointsResult = await db.query(updatePointsQuery, [userId]);
+
+      return {
+        success: true,
+        points: pointsResult.rows[0].points, // Return the updated points
+      };
+    } else {
+      // If no row was deleted, return success as false
+      return { success: false };
+    }
   } catch (error) {
     console.error("Error deleting trick for user ID:", userId, error);
     throw error;
   }
 };
 
+
 // Add a trick to a user
+// Add a trick to a user and award points
 const addUserTrick = async (userId, trickId) => {
   try {
-    const query = `
+    // Insert the trick into the user_tricks table
+    const insertQuery = `
       INSERT INTO user_tricks (user_id, trick_id)
       VALUES ($1, $2)
       RETURNING *;
     `;
-    const { rows } = await db.query(query, [userId, trickId]); // Use both userId and trickId
-    return rows[0]; // Return the inserted row
+    const insertResult = await db.query(insertQuery, [userId, trickId]);
+
+    // Award a point to the user
+    const updatePointsQuery = `
+      UPDATE users
+      SET points = points + 1
+      WHERE id = $1
+      RETURNING points;
+    `;
+    const pointsResult = await db.query(updatePointsQuery, [userId]);
+
+    return {
+      trick: insertResult.rows[0], // Return the inserted trick
+      points: pointsResult.rows[0].points // Return the updated points
+    };
   } catch (error) {
+    console.log ("points added")
     console.error("Error adding trick for user ID:", userId, error);
     throw error;
   }
 };
+
 
 module.exports = {
   getAllTricks,
   getAllTricksByUserId,
   deleteTrick,
   addUserTrick,
+  updateTrickStatus
 };

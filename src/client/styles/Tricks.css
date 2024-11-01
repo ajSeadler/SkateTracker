@@ -1,93 +1,131 @@
-/* Tricks.css */
-
+/* Base Styles */
 .tricks-container {
-  width: 100vw;
-  height: auto;
+  width: 75vw;
+  margin: 25px auto;
   padding: 20px;
-  background-color: #121212; /* Dark background for consistency */
-  color: #e0e0e0; /* Light gray text for better readability */
+  background: transparent; /* Gradient background for depth */
+  color: #e0e0e0;
 }
 
 .tricks-title {
-  font-size: 2.5rem;
-  width: 30%;
-  margin: auto;
-  margin-bottom: 30px;
+  font-size: 3rem;
   text-align: center;
-  color: #e0e0e0; /* Light gray title color */
+  margin-bottom: 40px;
+  color: #ffffff;
   font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5); /* Subtle text shadow for emphasis */
 }
 
-.tricks-subtitle {
-  width: 30%;
-  margin: auto;
-  margin-bottom: 30px;
+
+.category-title {
+  font-size: 2.3rem;
+  border-top: 5px solid #777;
   text-align: center;
-  color: #e0e0e0; /* Light gray title color */
-  font-weight: bold;
+  padding: 15px;
+  margin: 20px;
+  color: #ffffff;
+  font-weight: bold !important;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3); /* Subtle text shadow for emphasis */
 }
+
+
 
 .tricks-list {
   display: flex;
-  flex-direction: column;
-  gap: 20px;
-  max-width: 1200px;
-  margin: 0 auto;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: center;
 }
 
 .trick-card {
-  background-color: #1e1e1e; /* Dark card background for contrast */
-  border-radius: 12px;
+  background: rgba(
+    255,
+    255,
+    255,
+    0.1
+  ); /* Semi-transparent background for a glassy effect */
+  border-radius: 15px;
+  border-left: 5px solid #8e2de2;
   padding: 20px;
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+  width: 320px;
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .trick-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-10px);
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.7);
 }
 
-.trick-header {
+.trick-card-header {
   display: flex;
+  color: #fff;
   align-items: center;
-  gap: 15px;
+  gap: 10px;
   margin-bottom: 15px;
 }
 
 .trick-icon {
-  width: 40px;
-  height: 40px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
-  background-color: #333; /* Dark background for the icon */
+  background-color: #333;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: #ffffff;
+  border: 2px solid #ffffff; /* White border for a cleaner look */
 }
 
 .trick-name {
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   font-weight: bold;
-  color: #ffffff; /* White text for the name */
+  color: #ffffff;
 }
 
 .trick-description {
-  font-size: 1rem;
-  color: #c0c0c0; /* Light gray for description text */
+  font-size: 1.1rem;
+  color: #d0d0d0;
   margin-bottom: 15px;
 }
 
-.trick-date {
-  font-size: 0.875rem;
-  color: #a0a0a0; /* Slightly lighter gray for the date */
+.tricks-container button {
+  background: #8e2de2;
+  border: none;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.tricks-container button:hover {
+  background: linear-gradient(
+    45deg,
+    #ff4d4d,
+    #ffaa00
+  ); /* Darker gradient on hover */
+  transform: scale(1.05);
+}
+
+.tricks-container button:disabled {
+  background: #666;
+  cursor: not-allowed;
+}
+
+.added-message {
+  font-size: 0.9rem;
+  color: #4caf50; /* Green color for success messages */
+  margin-top: 10px;
 }
 
 .loading,
 .error {
   text-align: center;
   font-size: 1.25rem;
-  color: #ff6b6b; /* Soft red color for errors */
+  color: #ff6b6b;
   margin-top: 20px;
 }

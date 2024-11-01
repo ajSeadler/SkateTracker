@@ -71,6 +71,7 @@ const useUserData = () => {
         }
 
         const tricks = await response.json();
+        console.log('Fetched Tricks:', tricks);
         setTricks(tricks);
       } catch (error) {
         setTricksError(error.message);
@@ -159,11 +160,11 @@ const useUserData = () => {
 
     fetchUserData();
   }, []);
-  const deleteTrick = async (userId, trickId) => {
+  const deleteTrick = async (trickId) => {
     try {
       const token = localStorage.getItem("token");
       const response = await fetch(
-        `http://localhost:3000/api/tricks/user/${trickId}`,
+        `http://localhost:3000/api/tricks/user/${trickId}`, // Ensure this endpoint is correct
         {
           method: "DELETE",
           headers: {
@@ -172,21 +173,59 @@ const useUserData = () => {
           },
         }
       );
-
+  
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
         throw new Error("Failed to delete trick");
       }
-
+  
       // Update the tricks state to remove the deleted trick
       setTricks((prevTricks) =>
         prevTricks.filter((trick) => trick.trick_id !== trickId)
       );
+  
+      // Update the userData to decrement the points by 1
+      setUserData((prevUserData) => ({
+        ...prevUserData,
+        points: prevUserData.points - 1,
+      }));
     } catch (error) {
       console.error("Error deleting trick:", error.message);
     }
   };
+
+  const updateTrickStatus = async (trickId, newStatus) => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await fetch(`http://localhost:3000/api/tricks/user/status`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ trickId, status: newStatus }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+        throw new Error("Failed to update trick status");
+      }
+  
+      // Optionally, update the tricks state to reflect the new status
+      setTricks((prevTricks) =>
+        prevTricks.map((trick) =>
+          trick.trick_id === trickId ? { ...trick, status: newStatus } : trick
+        )
+      );
+    } catch (error) {
+      console.error("Error updating trick status:", error.message);
+    }
+  };
+  
+  
+  
 
   return {
     userData,
@@ -205,6 +244,7 @@ const useUserData = () => {
     recoveryGoalsLoading,
     recoveryGoalsError,
     deleteTrick,
+    updateTrickStatus
   };
 };
 
