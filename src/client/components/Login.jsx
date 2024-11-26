@@ -14,6 +14,9 @@ const LoginContainer = styled(Container)({
   marginTop: 150,
   display: "flex",
   flexDirection: "column",
+  backgroundColor: "#fff",
+  borderRadius: "20px",
+  padding: "2rem",
   alignItems: "center",
 });
 
@@ -24,13 +27,13 @@ const LoginForm = styled("form")({
 
 const CredentialsInput = styled("div")({
   margin: "1rem 0",
-  width: "100%"
+  width: "100%",
 });
 
 const LoginButton = styled(Button)({
   margin: "1rem 0 2rem",
   width: "100%",
-  backgroundColor: "#b50000"
+  backgroundColor: "#b50000",
 });
 
 const Login = () => {
@@ -59,16 +62,16 @@ const Login = () => {
           password,
         }),
       });
-  
+
       const result = await response.json();
-  
+
       if (response.status === 200) {
         localStorage.setItem("token", result.token);
-  
+
         // Clear input fields!!!
         setEmail("");
         setPassword("");
-  
+
         setMessage("Successfully logged in!");
         // Redirect to /me
         window.location.href = "/me";
@@ -82,8 +85,6 @@ const Login = () => {
       setMessage("Incorrect Email or Password. Please Try Again.");
     }
   };
-  
-  
 
   const handleSubmit = (e) => {
     e.preventDefault();

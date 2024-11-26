@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import useUserData from "../hooks/useUserData";
 import ProfileCard from "./ProfileCard";
 import TricksList from "./TricksList";
-import RecoveriesList from "./RecoveriesList";
 import "../styles/ProfilePage.css";
 
 const ProfilePage = () => {
@@ -20,7 +19,7 @@ const ProfilePage = () => {
     trickGoalsLoading,
     trickGoalsError,
     deleteTrick,
-    updateTrickStatus
+    updateTrickStatus,
   } = useUserData();
 
   if (loading) return <p>Loading...</p>;
@@ -28,34 +27,38 @@ const ProfilePage = () => {
 
   return (
     <>
-      <div className="profile-page">
-        <div className="sidebar">
-          <ProfileCard
-            userData={userData}
-            tricks={tricks}
-            recoveries={recoveries}
-            trickGoals={trickGoals}
-            trickGoalsLoading={trickGoalsLoading}
-          />
-        </div>
-
-        <div className="feed">
-          <div className="tricks-list-feed">
-            <TricksList
+      <div>
+        <div className="profile-page">
+          <div className="sidebar">
+            <ProfileCard
+              userData={userData}
               tricks={tricks}
-              loading={tricksLoading}
-              error={tricksError}
-              deleteTrick={deleteTrick}
-              updateTrickStatus={updateTrickStatus} 
+              recoveries={recoveries}
+              trickGoals={trickGoals}
+              trickGoalsLoading={trickGoalsLoading}
             />
           </div>
-          {/* <div className="recoveries-list-feed">
+
+          <div className="feed">
+            <div id="borderLeft"></div>
+            <div className="tricks-list-feed">
+              <TricksList
+                tricks={tricks}
+                loading={tricksLoading}
+                error={tricksError}
+                deleteTrick={deleteTrick}
+                updateTrickStatus={updateTrickStatus}
+              />
+            </div>
+
+            {/* <div className="recoveries-list-feed">
             <RecoveriesList
               recoveries={recoveries}
               loading={recoveriesLoading}
               error={recoveriesError}
             />
           </div> */}
+          </div>
         </div>
       </div>
     </>

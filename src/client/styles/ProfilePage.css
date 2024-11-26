@@ -3,33 +3,38 @@
   display: flex;
   flex-direction: row;
   height: 100vh;
-  background-color: #fff;
-  color: #333;
+  color: #fff;
   padding: 0;
   box-sizing: border-box;
   overflow: hidden;
+  /* Prevents double scrolling on the parent */
 }
 
 /* Sidebar Styling */
 .profile-sidebar {
-  position: static;
   width: 450px;
-  height: 100vh;
+  height: 100%;
   left: 0;
   overflow-y: auto;
 }
 
 /* Feed Styling */
 .feed {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-direction: column;
   gap: 20px;
   padding: 20px;
-  background-color: #fff;
+  border-left: 2px solid #868686 !important;
   width: 100%;
   overflow-y: auto;
-  border-left: 2px solid #777;
 }
+
+/* #borderLeft {
+  border-left: 2px solid #868686 !important;
+  position: absolute;
+  top: 50%;
+  bottom: 0;
+} */
 
 /* Media Query for Mobile Devices */
 @media (max-width: 768px) {
@@ -62,22 +67,51 @@
 .feed-heading {
   margin-bottom: 5% !important;
   font-weight: bold !important;
-  color: #333;
+  color: #fff;
 }
 
 .feed-description {
-  background-color: #416e67;
+  background-color: #ee1d52;
   color: #ffffff;
+  width: 100%;
+  margin: auto;
   padding: 10px;
   border-radius: 20px;
 }
 
+.feed-description h2 {
+  font-size: 1.3rem;
+  margin-bottom: 10px;
+  text-decoration: underline;
+}
+
+.feed-description h3 {
+  font-size: 1.3rem;
+  margin: 15px 0 5px;
+  text-decoration: underline;
+}
+
+.feed-description p {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: #333;
+  /* Darker text for better readability */
+}
+
+.feed-description ul {
+  margin-left: 20px;
+  color: #333;
+}
+
+
+
+
 /* Profile Info Card */
 .profile-info-card {
   background-color: transparent !important;
-  border-left: 5px solid #416e67;
+  border-left: 5px solid #ee1d52;
   border-radius: 0 !important;
-  overflow-y: scroll;
+  overflow-y: auto;
   width: 100%;
   max-width: 100%;
   box-sizing: border-box;
@@ -97,7 +131,7 @@
 }
 
 .profile-name {
-  color: #000000;
+  color: #fff;
   font-weight: bolder !important;
   margin-bottom: 5% !important;
   font-size: 1.8rem;
@@ -105,14 +139,14 @@
 
 .profile-details {
   display: flex;
-  overflow-y: scroll;
+  overflow-y: auto;
   flex-direction: column;
   gap: 20px;
 }
 
 .profile-detail {
-  color: #333;
-  overflow-y: scroll;
+  color: #ccc;
+  overflow-y: auto;
   margin-bottom: 8px;
   font-size: 1rem;
 }
@@ -224,7 +258,7 @@
 .tricks-card {
   background-color: #242526 !important;
   border-radius: 12px !important;
-  border-left: 5px solid #8e2de2;
+  border-left: 5px solid #ee1d52;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
   padding: 16px;
   width: 100%;
@@ -291,7 +325,7 @@
   margin: 0 10px;
   font-size: 14px;
   font-weight: bolder !important;
-  background-color: #416e67 !important;
+  background-color: #ee1d52 !important;
   color: #fff !important;
   border: none !important;
 }
@@ -311,9 +345,9 @@
 
 /* Feed Cards */
 .feed-card {
-  background-color: #fff !important;
   border-radius: 20px !important;
-  border-left: 5px solid #416e67;
+  background-color: #242526 !important;
+  border-left: 5px solid #ee1d52;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3) !important;
   height: auto;
   padding: 15px !important;
@@ -327,13 +361,13 @@
 }
 
 .feed-card-title {
-  color: #333 !important;
+  color: #fff !important;
   text-decoration: underline;
   font-size: 1.6rem !important;
   margin-bottom: 10px !important;
 }
 
 .feed-card p {
-  color: #333 !important;
+  color: #fff !important;
   font-size: 1rem !important;
 }

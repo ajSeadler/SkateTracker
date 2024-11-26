@@ -81,10 +81,7 @@ const TricksList = ({
             <Card key={trick.trick_id} className="feed-card">
               <CardContent className="trick-card-content">
                 <div className="trick-card-header">
-                  <Typography
-                    variant="h6"
-                    style={{ fontWeight: "bolder", color: "#333" }}
-                  >
+                  <Typography variant="h6" style={{ fontWeight: "bolder" }}>
                     {trick.name}
                   </Typography>
                 </div>

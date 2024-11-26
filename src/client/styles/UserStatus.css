@@ -1,0 +1,150 @@
+.user-post-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 20px;
+  margin: auto;
+  border-radius: 10px;
+  background-color: #fff;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.post-form {
+  margin-bottom: 20px;
+  width: 50%;
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.post-form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  resize: none;
+  margin-bottom: 15px;
+  /* Add margin below the textarea */
+}
+
+.media-upload {
+  margin: 15px 0;
+  /* Add more space around the media upload section */
+}
+
+.media-upload input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-top: 8px;
+  /* Add spacing between the input field and the text */
+}
+
+.post-form button {
+  display: block;
+  padding: 12px 25px;
+  width: 25%;
+  /* Slightly increase the button's padding for better spacing */
+  background-color: #ee1d52;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-top: 15px;
+  /* Add space between the button and the media input */
+}
+
+.post-form button:hover {
+  background-color: #3fd569;
+}
+
+.post-feed {
+  margin-top: 20px;
+}
+
+.post {
+  margin-bottom: 20px;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: white;
+}
+
+.post img,
+.post video {
+  max-width: 100%;
+  margin-top: 10px;
+  border-radius: 5px;
+}
+
+.post-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: #555;
+}
+
+/* Error Card Styling */
+.error-card {
+  background: linear-gradient(135deg, #ff6161, #ff3d3d);
+  color: white;
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+.error-message {
+  font-size: 1.2rem;
+  font-weight: 600;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* No Posts Card Styling */
+.no-posts-card {
+  background: #f8f9fa;
+  border: 1px solid #e0e0e0;
+  border-radius: 16px;
+  padding: 30px;
+  margin: 20px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.no-posts-header {
+  font-weight: bold;
+  color: #333333;
+  margin-bottom: 10px;
+}
+
+.no-posts-subtext {
+  color: #555555;
+  font-family: 'Roboto', sans-serif;
+  margin: 0;
+}
+
+.cta-button {
+  display: inline-block;
+  color: rgb(48, 107, 255);
+  text-decoration: none;
+}
+
+
+
+
+
+.post-footer button {
+  background-color: #e74c3c;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.post-footer button:hover {
+  background-color: #c0392b;
+}

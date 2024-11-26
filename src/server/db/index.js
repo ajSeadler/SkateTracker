@@ -1,8 +1,9 @@
 module.exports = {
   ...require("./users"),
-  ...require("./recoveries"),
+
   ...require("./tricks"),
   ...require("./trickGoals"),
+  ...require("./status"),
 
   // add in other modlues
 };

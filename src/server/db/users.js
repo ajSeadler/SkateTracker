@@ -11,7 +11,7 @@ const createUser = async (userData) => {
     last_name,
     phone_number,
     shipping_address,
-    billing_address,
+    description,
   } = userData;
   const hashedPassword = await bcrypt.hash(password, SALT_COUNT);
 
@@ -20,7 +20,7 @@ const createUser = async (userData) => {
       rows: [user],
     } = await db.query(
       `
-        INSERT INTO users(name, email, password, first_name, last_name, phone_number, shipping_address, billing_address)
+        INSERT INTO users(name, email, password, first_name, last_name, phone_number, shipping_address, description)
         VALUES($1, $2, $3, $4, $5, $6, $7, $8)
         ON CONFLICT (email) DO NOTHING
         RETURNING *`,
@@ -32,7 +32,7 @@ const createUser = async (userData) => {
         last_name,
         phone_number,
         shipping_address,
-        billing_address,
+        description,
       ]
     );
 

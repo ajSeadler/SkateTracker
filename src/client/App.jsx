@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import Home from "./components/Home";
 import Login from "./components/Login";
 import ProfilePage from "./components/ProfilePage";
-import Recoveries from "./components/Recoveries";
 import Nav from "./components/Nav";
 import Tricks from "./components/Tricks";
 import SignUp from "./components/SignUp";
@@ -19,7 +18,6 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/me" element={<ProfilePage />} />
-          <Route path="/warm-ups" element={<Recoveries />} />
           <Route path="/trick-bank" element={<Tricks />} />
           <Route path="/community" element={<Community />} />
         </Routes>

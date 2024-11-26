@@ -48,14 +48,13 @@ apiRouter.use((req, res, next) => {
 const usersRouter = require("./users");
 apiRouter.use("/users", usersRouter);
 
-const recoveriesRouter = require("./recoveries");
-apiRouter.use("/recoveries", recoveriesRouter);
-
 const tricksRouter = require("./tricks");
 apiRouter.use("/tricks", tricksRouter);
 
 const trickGoalsRouter = require("./trickGoals");
 apiRouter.use("/trickGoals", trickGoalsRouter);
+const statusRouter = require("./status");
+apiRouter.use("/status", statusRouter);
 
 // add in other routes like above
 

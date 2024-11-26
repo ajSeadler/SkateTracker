@@ -1,7 +1,6 @@
 const db = require("./client");
 const { createUser } = require("./users");
 const tricksData = require("./tricksData");
-const recoveriesData = require("./recoveriesdata");
 
 // Sample users
 const users = [
@@ -13,7 +12,7 @@ const users = [
     last_name: "Seadler",
     phone_number: "123-456-7890",
     shipping_address: "123 Elm Street, Springfield",
-    billing_address: "123 Elm Street, Springfield",
+    description: "Bingo bango bongo OKC skateboarding.",
   },
   {
     name: "tonysoprano",
@@ -23,7 +22,7 @@ const users = [
     last_name: "Soprano",
     phone_number: "987-654-3210",
     shipping_address: "456 Oak Avenue, Newark",
-    billing_address: "456 Oak Avenue, Newark",
+    description: "456 Oak Avenue, Newark",
   },
   {
     name: "shredMaster42",
@@ -33,7 +32,7 @@ const users = [
     last_name: "Wheeler",
     phone_number: "555-789-1234",
     shipping_address: "789 Pine Lane, Boulder",
-    billing_address: "789 Pine Lane, Boulder",
+    description: "789 Pine Lane, Boulder",
   },
   {
     name: "flipKing77",
@@ -43,7 +42,7 @@ const users = [
     last_name: "Carter",
     phone_number: "555-321-9876",
     shipping_address: "321 Maple Road, Portland",
-    billing_address: "321 Maple Road, Portland",
+    description: "321 Maple Road, Portland",
   },
   {
     name: "ollieQueen90",
@@ -53,7 +52,7 @@ const users = [
     last_name: "Hill",
     phone_number: "555-654-4321",
     shipping_address: "654 Cedar Street, Denver",
-    billing_address: "654 Cedar Street, Denver",
+    description: "654 Cedar Street, Denver",
   },
   {
     name: "grindMachineX",
@@ -63,7 +62,7 @@ const users = [
     last_name: "Turner",
     phone_number: "555-876-5432",
     shipping_address: "876 Birch Avenue, Austin",
-    billing_address: "876 Birch Avenue, Austin",
+    description: "876 Birch Avenue, Austin",
   },
   {
     name: "sk8rboi23",
@@ -73,7 +72,7 @@ const users = [
     last_name: "Moore",
     phone_number: "555-432-1987",
     shipping_address: "432 Poplar Drive, Miami",
-    billing_address: "432 Poplar Drive, Miami",
+    description: "432 Poplar Drive, Miami",
   },
   {
     name: "railSlide99",
@@ -83,7 +82,7 @@ const users = [
     last_name: "Johnson",
     phone_number: "555-345-6789",
     shipping_address: "345 Spruce Lane, Seattle",
-    billing_address: "345 Spruce Lane, Seattle",
+    description: "345 Spruce Lane, Seattle",
   },
   {
     name: "kickFlipQueen",
@@ -93,7 +92,7 @@ const users = [
     last_name: "Anderson",
     phone_number: "555-987-2345",
     shipping_address: "987 Willow Way, Chicago",
-    billing_address: "987 Willow Way, Chicago",
+    description: "987 Willow Way, Chicago",
   },
   {
     name: "boardMaster88",
@@ -103,7 +102,7 @@ const users = [
     last_name: "Davis",
     phone_number: "555-789-0123",
     shipping_address: "789 Ash Street, San Francisco",
-    billing_address: "789 Ash Street, San Francisco",
+    description: "789 Ash Street, San Francisco",
   },
   {
     name: "grindGuru77",
@@ -113,7 +112,7 @@ const users = [
     last_name: "Martinez",
     phone_number: "555-123-0987",
     shipping_address: "123 Redwood Lane, Los Angeles",
-    billing_address: "123 Redwood Lane, Los Angeles",
+    description: "123 Redwood Lane, Los Angeles",
   },
   {
     name: "popShuvitPro",
@@ -123,16 +122,18 @@ const users = [
     last_name: "Garcia",
     phone_number: "555-234-5678",
     shipping_address: "234 Elm Drive, San Diego",
-    billing_address: "234 Elm Drive, San Diego",
+    description: "234 Elm Drive, San Diego",
   },
 ];
 
 const dropTables = async () => {
   try {
     await db.query(`
-      DROP TABLE IF EXISTS trick_goals, recovery_goals, user_tricks, tricks, user_recoveries, recoveries, users CASCADE;
+      DROP TABLE IF EXISTS user_tricks, trick_goals, tricks, statuses, users CASCADE;
     `);
+    console.log("Tables dropped successfully.");
   } catch (error) {
+    console.error("Error dropping tables:", error);
     throw error;
   }
 };
@@ -149,11 +150,20 @@ const createTables = async () => {
         last_name VARCHAR(255),
         phone_number VARCHAR(50),
         shipping_address TEXT,
-        billing_address TEXT,
+        description VARCHAR(500),
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         points INTEGER DEFAULT 0
       );
+
+     CREATE TABLE statuses (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id) ON DELETE CASCADE,
+    content TEXT NOT NULL,
+    media_url TEXT, -- Optional media (images/videos)
+    created_at TIMESTAMPTZ DEFAULT NOW() -- Combined timestamp with timezone
+);
+
 
       CREATE TABLE tricks (
         trick_id SERIAL PRIMARY KEY,
@@ -175,39 +185,10 @@ const createTables = async () => {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       );
 
-      CREATE TABLE recoveries (
-        recovery_id SERIAL PRIMARY KEY,
-        name VARCHAR(255),
-        description TEXT,
-        target_area VARCHAR(255),
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE user_recoveries (
-        user_recovery_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id),
-        recovery_id INTEGER REFERENCES recoveries(recovery_id),
-        recovery_date TIMESTAMP,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
       CREATE TABLE trick_goals (
         goal_id SERIAL PRIMARY KEY,
         user_id INTEGER REFERENCES users(id),
         trick_id INTEGER REFERENCES tricks(trick_id),
-        goal_description TEXT,
-        target_date TIMESTAMP,
-        achieved BOOLEAN DEFAULT FALSE,
-        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
-      CREATE TABLE recovery_goals (
-        goal_id SERIAL PRIMARY KEY,
-        user_id INTEGER REFERENCES users(id),
-        recovery_id INTEGER REFERENCES recoveries(recovery_id),
         goal_description TEXT,
         target_date TIMESTAMP,
         achieved BOOLEAN DEFAULT FALSE,
@@ -220,7 +201,6 @@ const createTables = async () => {
   }
 };
 
-
 const insertUsers = async () => {
   try {
     for (const user of users) {
@@ -232,8 +212,8 @@ const insertUsers = async () => {
         last_name: user.last_name,
         phone_number: user.phone_number,
         shipping_address: user.shipping_address,
-        billing_address: user.billing_address,
-        points: user.points
+        description: user.description,
+        points: user.points,
       });
     }
     console.log("Users inserted successfully.");
@@ -253,24 +233,13 @@ const insertInitialData = async () => {
         [trick.name, trick.description, trick.difficulty_level, trick.category]
       );
     }
-
-    // Insert recoveries
-    for (const recovery of recoveriesData) {
-      await db.query(
-        `
-        INSERT INTO recoveries(name, description, target_area)
-        VALUES($1, $2, $3)`,
-        [recovery.name, recovery.description, recovery.target_area]
-      );
-    }
-
     console.log("Initial data inserted successfully.");
   } catch (error) {
     console.error("Error inserting initial data:", error);
   }
 };
 
-const insertUserTricksAndRecoveries = async () => {
+const insertUserTricks = async () => {
   try {
     // Get user IDs
     const { rows: users } = await db.query("SELECT id FROM users");
@@ -283,15 +252,7 @@ const insertUserTricksAndRecoveries = async () => {
     // Select a random sample of 5 tricks
     const selectedTrickIds = trickIds
       .sort(() => 0.5 - Math.random())
-      .slice(0, 0); // Ensure you are selecting 5 tricks
-
-    // Get recovery IDs
-    const { rows: recoveries } = await db.query("SELECT recovery_id FROM recoveries");
-    const recoveryIds = recoveries.map((recovery) => recovery.recovery_id);
-
-    const selectedRecoveryIds = recoveryIds
-      .sort(() => 0.5 - Math.random())
-      .slice(0, 4);
+      .slice(0, 5); // Select 5 tricks
 
     // Insert user_tricks with status
     for (const userId of userIds) {
@@ -304,101 +265,76 @@ const insertUserTricksAndRecoveries = async () => {
         );
       }
     }
-
-    // Insert user_recoveries
-    for (const userId of userIds) {
-      for (const recoveryId of selectedRecoveryIds) {
-        await db.query(
-          `
-          INSERT INTO user_recoveries(user_id, recovery_id, recovery_date)
-          VALUES($1, $2, NOW())`,
-          [userId, recoveryId]
-        );
-      }
-    }
-
-    console.log("User tricks and recoveries inserted successfully.");
+    console.log("User tricks inserted successfully.");
   } catch (error) {
-    console.error("Error inserting user tricks and recoveries:", error);
+    console.error("Error inserting user tricks:", error);
   }
 };
 
-
-const insertTrickGoals = async () => {
+const insertStatuses = async () => {
   try {
-    // Example goals
-    const goals = [
+    // Example statuses
+    const statuses = [
       {
         user_id: 1,
-        trick_id: 7,
-        goal_description: "Master this trick by end of the month.",
-        target_date: "2024-09-01",
+        content: "Just landed my first kickflip! 🎉",
+        media_url:
+          "https://www.mensjournal.com/.image/ar_1:1%2Cc_fill%2Ccs_srgb%2Cfl_progressive%2Cq_auto:good%2Cw_1200/MTk2MTM2NDM2NzUxMjE0MDg1/1-kickflip---main-image.jpg",
       },
       {
-        user_id: 1,
-        trick_id: 2,
-        goal_description:
-          "Improve performance of this trick. (Back foot catch).",
-        target_date: "2024-09-15",
+        user_id: 2,
+        content: "Practicing grinds at the local park. 🛹",
       },
       {
-        user_id: 1,
-        trick_id: 4,
-        goal_description: "Improve performance of this trick.",
-        target_date: "2024-09-15",
+        user_id: 3,
+        content: "Chillin' with the crew at the skate spot.",
+        media_url:
+          "https://boardblazers.com/cdn/shop/articles/how_to_kickflip_800x800.jpg?v=1701816573",
       },
     ];
 
-    for (const goal of goals) {
+    for (const status of statuses) {
+      await db.query(
+        `
+        INSERT INTO statuses(user_id, content, media_url)
+        VALUES($1, $2, $3)`,
+        [status.user_id, status.content, status.media_url]
+      );
+    }
+
+    console.log("Statuses inserted successfully.");
+  } catch (error) {
+    console.error("Error inserting statuses:", error);
+  }
+};
+
+const insertTrickGoals = async () => {
+  try {
+    const { rows: users } = await db.query("SELECT id FROM users");
+    const { rows: tricks } = await db.query("SELECT trick_id FROM tricks");
+
+    for (const user of users) {
+      const randomTrick = tricks[Math.floor(Math.random() * tricks.length)];
+      const targetDate = new Date();
+      targetDate.setMonth(targetDate.getMonth() + 1); // Target 1 month from now
+
       await db.query(
         `
         INSERT INTO trick_goals(user_id, trick_id, goal_description, target_date)
         VALUES($1, $2, $3, $4)`,
-        [goal.user_id, goal.trick_id, goal.goal_description, goal.target_date]
-      );
-    }
-
-    console.log("Trick goals inserted successfully.");
-  } catch (error) {
-    console.error("Error inserting trick goals:", error);
-  }
-};
-
-const insertRecoveryGoals = async () => {
-  try {
-    // Example goals
-    const goals = [
-      {
-        user_id: 1,
-        recovery_id: 1,
-        goal_description: "Complete recovery exercises by next month.",
-        target_date: "2024-09-01",
-      },
-      {
-        user_id: 2,
-        recovery_id: 2,
-        goal_description: "Improve recovery process efficiency.",
-        target_date: "2024-09-15",
-      },
-    ];
-
-    for (const goal of goals) {
-      await db.query(
-        `
-        INSERT INTO recovery_goals(user_id, recovery_id, goal_description, target_date)
-        VALUES($1, $2, $3, $4)`,
         [
-          goal.user_id,
-          goal.recovery_id,
-          goal.goal_description,
-          goal.target_date,
+          user.id,
+          randomTrick.trick_id,
+          `Goal to master trick #${
+            randomTrick.trick_id
+          } by ${targetDate.toLocaleDateString()}`,
+          targetDate,
         ]
       );
     }
-
-    console.log("Recovery goals inserted successfully.");
+    console.log("Trick goals inserted successfully.");
   } catch (error) {
-    console.error("Error inserting recovery goals:", error);
+    console.error("Error inserting trick goals:", error);
   }
 };
 
@@ -409,9 +345,9 @@ const seedDatabase = async () => {
     await createTables();
     await insertUsers();
     await insertInitialData();
-    await insertUserTricksAndRecoveries();
+    await insertUserTricks();
+    await insertStatuses(); // Insert statuses
     await insertTrickGoals();
-    await insertRecoveryGoals();
   } catch (error) {
     console.error("Error seeding database:", error);
   } finally {

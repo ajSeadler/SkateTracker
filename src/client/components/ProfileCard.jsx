@@ -1,3 +1,4 @@
+// ProfileCard.js
 import React, { useEffect, useState } from "react";
 import {
   Card,
@@ -8,6 +9,7 @@ import {
   LinearProgress,
 } from "@mui/material";
 import { Star } from "@mui/icons-material";
+import MyPosts from "./MyPosts"; // Import MyPosts component
 import Goals from "./Goals";
 import "../styles/ProfilePage.css";
 
@@ -59,7 +61,10 @@ const ProfileCard = ({ userData, tricks, trickGoals, trickGoalsLoading }) => {
               <Typography variant="body1" className="profile-detail">
                 <strong>{userData.email}</strong>
               </Typography>
-
+              <div className="feed-description">
+                <h2>Bio</h2>
+                <p>{userData.description}</p>
+              </div>
               <Typography variant="body1" className="profile-detail">
                 <div style={{ display: "flex", alignItems: "center" }}>
                   <Star style={{ color: "yellow" }} />
@@ -74,27 +79,29 @@ const ProfileCard = ({ userData, tricks, trickGoals, trickGoalsLoading }) => {
                       borderRadius: 5,
                       backgroundColor: "#e0e0e0", // The color of the unfilled part of the bar
                       "& .MuiLinearProgress-bar": {
-                        backgroundColor: "green", // The filled portion color
+                        backgroundColor: "#ee1d52", // The filled portion color
                       },
                     }}
                   />
                   <Typography
                     variant="body2"
                     color="textPrimary"
-                    style={{ marginTop: "4px", color: "#333" }}
+                    style={{ marginTop: "4px", color: "#ddd" }}
                   >
                     {masteredTricks} / {totalTricks} Tricks
                   </Typography>
                 </div>
               </Typography>
+              <div className="goals">
+                <Goals
+                  trickGoals={trickGoals}
+                  trickGoalsLoading={trickGoalsLoading}
+                />
+              </div>
+              {/* MyPosts component showing user posts */}
+              <MyPosts userId={userData.id} />
             </div>
             <Divider className="profile-divider" />
-            <div className="goals">
-              <Goals
-                trickGoals={trickGoals}
-                trickGoalsLoading={trickGoalsLoading}
-              />
-            </div>
           </CardContent>
         </Card>
       </div>
