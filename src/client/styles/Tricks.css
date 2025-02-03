@@ -2,7 +2,6 @@
 .tricks-container {
   width: 75vw;
   margin: 25px auto;
-  padding: 20px;
   background: transparent;
   /* Gradient background for depth */
   color: #e0e0e0;
@@ -49,7 +48,7 @@
   border-radius: 15px;
   border-left: 5px solid #ee1d52;
   padding: 20px;
-  width: 320px;
+  width: 40%;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
@@ -131,4 +130,14 @@
   font-size: 1.25rem;
   color: #ff6b6b;
   margin-top: 20px;
+}
+
+@media (max-width: 786px) {
+  .trick-card {
+    width: 100%;
+  }
+
+  .tricks-container {
+    padding: 0px;
+  }
 }

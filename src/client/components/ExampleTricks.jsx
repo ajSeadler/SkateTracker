@@ -26,7 +26,7 @@ const ExampleTricks = () => {
         {tricks.map((trick, index) => (
           <div key={trick.id || index} className="trick-card-home">
             <h3>{trick.name}</h3>
-            <p style={{ color: "#ccc" }}>
+            <p style={{ color: "#666" }}>
               Difficulty: {trick.difficulty_level}
             </p>
             <p>{trick.description}</p>
@@ -34,8 +34,7 @@ const ExampleTricks = () => {
         ))}
       </div>
 
-      {/* Additional Content */}
-      <div className="tricks-extra-info">
+      {/* <div className="tricks-extra-info">
         <h3>Skater Reviews</h3>
         <blockquote>
           “Adding these tricks gave me a whole new challenge!” – Rylan B.
@@ -57,7 +56,7 @@ const ExampleTricks = () => {
           Focus on consistency – practice a trick until it feels natural. Try
           using a slow-mo video app to catch details in your technique.
         </p>
-      </div>
+      </div> */}
     </div>
   );
 };

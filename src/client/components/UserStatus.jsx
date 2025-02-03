@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import "../styles/UserStatus.css";
+import { FaImage, FaPaperPlane } from "react-icons/fa";
 
 const UserStatus = ({ onNewStatus }) => {
   const [content, setContent] = useState("");
@@ -30,11 +31,8 @@ const UserStatus = ({ onNewStatus }) => {
       }
 
       const { newStatus } = await response.json();
-
-      // Call the onNewStatus function to add the new status to the list in Community component
       onNewStatus(newStatus);
 
-      // Clear the input fields and error
       setContent("");
       setMediaUrl("");
       setError("");
@@ -44,19 +42,26 @@ const UserStatus = ({ onNewStatus }) => {
   };
 
   return (
-    <div className="post-form">
+    <div className="status-box">
       <textarea
-        placeholder="New trick to share?"
+        className="status-input"
+        placeholder="Share something..."
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
-      <input
-        type="text"
-        placeholder="Media URL (optional)"
-        value={mediaUrl}
-        onChange={(e) => setMediaUrl(e.target.value)}
-      />
-      <button onClick={handlePost}>Post</button>
+      <div className="status-actions">
+        <input
+          type="text"
+          className="media-input"
+          placeholder="Media URL (optional)"
+          value={mediaUrl}
+          onChange={(e) => setMediaUrl(e.target.value)}
+        />
+        <FaImage className="icon" />
+      </div>
+      <button className="post-button" onClick={handlePost}>
+        <FaPaperPlane /> Post
+      </button>
       {error && <p className="error-message">{error}</p>}
     </div>
   );

@@ -1,142 +1,65 @@
-/* Updated Header Styles */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 2rem;
-  background-color: transparent;
-  position: relative;
+/* Global Styles for the Navbar */
+header {
+  /* Transparent with slight white tint */
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.logo {
-  margin-right: auto;
-}
-
-.logo a {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #fff;
+a {
   text-decoration: none;
+}
+
+.logo-link {
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: white;
+  transition: color 0.3s ease;
+}
+
+.logo-link:hover {
+  color: #ddd;
 }
 
 .nav {
   display: flex;
+  gap: 1rem;
   align-items: center;
-  justify-content: center;
-  flex-grow: 1;
-  gap: 20px;
 }
 
-.nav a {
-  font-weight: bold;
-  font-size: 1rem;
-  color: #e0e0e0;
-  text-decoration: none;
+button {
+  border-radius: 50px;
 }
 
-.nav a:hover,
-.nav a.active-link {
-  text-decoration: underline;
-  /* Tech purple for hover and active state */
-}
-
-.button-group {
-  display: flex;
-  gap: 20px;
-}
-
-.login-btn {
-  padding: .5rem;
-  border-radius: 20px;
-  background-color: #ccc;
-  color: #333;
-}
-
-.login-btn:hover {
-  background-color: #b79ec7;
-}
-
-/* Mobile Navigation Styles */
 .menu-toggle {
   display: none;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 10px;
-  margin-left: 20px;
 }
 
-.menu-icon {
-  width: 25px;
-  height: 3px;
-  background-color: #ffffff;
-  margin: 3px 0;
-  transition: 0.3s;
-}
-
-.mobile-menu {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background-color: rgba(0, 0, 0, 0.9);
-  color: #fff;
-  padding: 20px;
-  z-index: 1000;
-  overflow-y: auto;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.mobile-menu.show {
-  display: flex;
-}
-
-.mobile-menu a {
-  display: block;
-  margin: 15px 0;
-  font-size: 1.5rem;
-  color: #e0e0e0;
-  text-decoration: none;
-}
-
-.mobile-menu a:hover,
-.mobile-menu a.active-link {
-  color: #8e2de2;
-  /* Tech purple for hover and active state */
-}
-
-/* Responsive Navigation */
-@media (max-width: 768px) {
-  .header {
-    padding: 10px 20px;
-    position: relative;
-  }
-
-  .logo a {
-    font-size: 1.2rem;
-  }
-
-  .nav {
-    display: none;
-  }
-
-  .button-group {
-    display: none;
-  }
-
+@media screen and (max-width: 600px) {
   .menu-toggle {
-    display: flex;
+    display: block;
   }
 
-  .login-btn {
-    padding: 6px 12px;
-    font-size: 0.9rem;
+  .menu-icon {
+    font-size: 30px;
   }
+}
+
+/* Styling for active links */
+.active-link {
+  color: #B0BEC5;
+  background-color: black;
+  /* Subtle grey color for active links */
+  font-weight: bold;
+}
+
+/* Mobile menu */
+.mobile-menu {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  background-color: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(5px);
+}
+
+.mobile-menu button {
+  margin-top: 0.5rem;
 }

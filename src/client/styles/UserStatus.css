@@ -1,66 +1,86 @@
-.user-post-container {
+/* Center the status box */
+.status-box {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 20px;
-  margin: auto;
-  border-radius: 10px;
-  background-color: #fff;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
-
-.post-form {
-  margin-bottom: 20px;
+  background: #222;
+  /* Dark background */
+  border-radius: 12px;
   width: 50%;
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  padding: 20px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+  border: 1px solid #333;
+  margin: 40px auto;
+  /* Center it */
+  transition: box-shadow 0.3s ease-in-out;
 }
 
-.post-form textarea {
-  padding: 12px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  resize: none;
-  margin-bottom: 15px;
-  /* Add margin below the textarea */
+.status-box:hover {
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.6);
 }
 
-.media-upload {
-  margin: 15px 0;
-  /* Add more space around the media upload section */
-}
-
-.media-upload input {
+/* Status input field (like Facebook) */
+.status-input {
   width: 100%;
-  padding: 10px;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-top: 8px;
-  /* Add spacing between the input field and the text */
-}
-
-.post-form button {
-  display: block;
-  padding: 12px 25px;
-  width: 25%;
-  /* Slightly increase the button's padding for better spacing */
-  background-color: #ee1d52;
-  color: white;
+  height: 120px;
+  /* Match Facebook's larger text box */
+  background: #2c2c2c;
+  color: #e0e0e0;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 1.1rem;
+  resize: none;
+  outline: none;
+  transition: background 0.3s, border 0.3s;
+}
+
+.status-input:focus {
+  background: #3a3a3a;
+  border: 1px solid #ee1d52;
+}
+
+/* Actions row (media input + icon) */
+.status-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 12px;
+  background: #2c2c2c;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #444;
+  transition: border 0.3s ease;
+}
+
+.status-actions:focus-within {
+  border-color: #ee1d52;
+}
+
+/* Media input box */
+.media-input {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #e0e0e0;
+  font-size: 1rem;
+  padding: 10px;
+  outline: none;
+}
+
+.media-input::placeholder {
+  color: #aaa;
+}
+
+/* Icon inside media input */
+.icon {
+  color: #ee1d52;
+  font-size: 1.4rem;
   cursor: pointer;
-  margin-top: 15px;
-  /* Add space between the button and the media input */
+  transition: color 0.3s;
 }
 
-.post-form button:hover {
-  background-color: #3fd569;
-}
-
-.post-feed {
-  margin-top: 20px;
+.icon:hover {
+  color: #ffb727;
 }
 
 .post {

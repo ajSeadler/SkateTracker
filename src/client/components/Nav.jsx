@@ -1,14 +1,25 @@
 import React, { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import {
+  AppBar,
+  Toolbar,
+  Button,
+  Typography,
+  Box,
+  Menu,
+  MenuItem,
+  IconButton,
+} from "@mui/material";
+import { AccountCircle } from "@mui/icons-material";
 import "../styles/Nav.css";
 
 const Nav = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [token, setToken] = useState(null);
   const location = useLocation();
+  const [anchorEl, setAnchorEl] = useState(null);
 
   useEffect(() => {
-    // Check for token in localStorage or sessionStorage on component mount
     const savedToken = localStorage.getItem("token");
     setToken(savedToken);
   }, []);
@@ -20,113 +31,173 @@ const Nav = () => {
   const isActive = (path) => location.pathname === path;
 
   const handleLogout = () => {
-    localStorage.removeItem("token"); // Or sessionStorage.removeItem if using session storage
-    setToken(null); // Remove token from state
-    toggleMenu(); // Close menu if open
+    localStorage.removeItem("token");
+    setToken(null);
+    setAnchorEl(null);
+  };
+
+  const handleMenuOpen = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
   };
 
   return (
-    <>
-      <header className="header">
-        <div className="logo">
-          <Link to="/" className={isActive("/") ? "active-link" : ""}>
-            Skate<span style={{ fontWeight: "100" }}>Media</span>
+    <AppBar
+      position="sticky"
+      sx={{
+        backgroundColor: "#222",
+      }}
+    >
+      <Toolbar sx={{ display: "flex", justifyContent: "space-between" }}>
+        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+          <Link to="/" className="logo-link">
+            Skate<span style={{ fontWeight: 100 }}>Media</span>
           </Link>
-        </div>
-        <nav className="nav">
-          <Link to="/" className={isActive("/") ? "active-link" : ""}>
-            Home
-          </Link>
-          <Link
-            to="/trick-bank"
-            className={isActive("/trick-bank") ? "active-link" : ""}
-          >
-            Trick Bank
-          </Link>
+        </Typography>
 
-          <Link
-            to="/community"
-            className={isActive("/community") ? "active-link" : ""}
-          >
-            Media
-          </Link>
-          <Link to="/me" className={isActive("/me") ? "active-link" : ""}>
-            Profile
-          </Link>
-          {token ? (
-            <button onClick={handleLogout} className="login-btn">
-              Logout
-            </button>
-          ) : (
-            <>
-              <Link to="/login">
-                <button className="login-btn">Login</button>
-              </Link>
-              <Link to="/signup">
-                <button className="login-btn">Sign Up</button>
-              </Link>
-            </>
-          )}
-        </nav>
-        <button className="menu-toggle" onClick={toggleMenu}>
-          <span className="menu-icon"></span>
-          <span className="menu-icon"></span>
-          <span className="menu-icon"></span>
-        </button>
-      </header>
-      {isMenuOpen && (
-        <div className="mobile-menu">
-          <button className="menu-toggle" onClick={toggleMenu}>
-            <span className="menu-icon"></span>
-            <span className="menu-icon"></span>
-            <span className="menu-icon"></span>
-          </button>
-          <Link
+        <Box sx={{ display: { xs: "none", sm: "flex" }, gap: 3 }}>
+          <Button
+            component={Link}
             to="/"
-            className={isActive("/") ? "active-link" : ""}
+            color="inherit"
+            variant={isActive("/") ? "contained" : "text"}
+          >
+            Home
+          </Button>
+          <Button
+            component={Link}
+            to="/trick-bank"
+            color="inherit"
+            variant={isActive("/trick-bank") ? "contained" : "text"}
+          >
+            Trick Bank
+          </Button>
+          <Button
+            component={Link}
+            to="/community"
+            color="inherit"
+            variant={isActive("/community") ? "contained" : "text"}
+          >
+            Media
+          </Button>
+          <Button
+            component={Link}
+            to="/me"
+            color="inherit"
+            variant={isActive("/me") ? "contained" : "text"}
+          >
+            Profile
+          </Button>
+
+          {token ? (
+            <Button color="inherit" onClick={handleLogout}>
+              Logout
+            </Button>
+          ) : (
+            <>
+              <Button component={Link} to="/login" color="inherit">
+                Login
+              </Button>
+              <Button component={Link} to="/signup" color="inherit">
+                Sign Up
+              </Button>
+            </>
+          )}
+        </Box>
+
+        {token && (
+          <IconButton onClick={handleMenuOpen} color="inherit">
+            <AccountCircle />
+          </IconButton>
+        )}
+
+        <Menu
+          anchorEl={anchorEl}
+          open={Boolean(anchorEl)}
+          onClose={handleMenuClose}
+          sx={{ mt: "45px" }}
+        >
+          <MenuItem onClick={handleLogout}>Logout</MenuItem>
+        </Menu>
+
+        <Box sx={{ display: { xs: "flex", sm: "none" } }}>
+          <IconButton color="inherit" onClick={toggleMenu}>
+            <span className="menu-icon">&#9776;</span>
+          </IconButton>
+        </Box>
+      </Toolbar>
+
+      {isMenuOpen && (
+        <Box sx={{ display: { xs: "block", sm: "none" }, padding: 2 }}>
+          <Button
+            fullWidth
+            component={Link}
+            to="/"
+            color="inherit"
             onClick={toggleMenu}
           >
             Home
-          </Link>
-          <Link
+          </Button>
+          <Button
+            fullWidth
+            component={Link}
             to="/trick-bank"
-            className={isActive("/trick-bank") ? "active-link" : ""}
+            color="inherit"
             onClick={toggleMenu}
           >
             Trick Bank
-          </Link>
-
-          <Link
+          </Button>
+          <Button
+            fullWidth
+            component={Link}
             to="/community"
-            className={isActive("/community") ? "active-link" : ""}
+            color="inherit"
             onClick={toggleMenu}
           >
             Media
-          </Link>
-          <Link
+          </Button>
+          <Button
+            fullWidth
+            component={Link}
             to="/me"
-            className={isActive("/me") ? "active-link" : ""}
+            color="inherit"
             onClick={toggleMenu}
           >
             Profile
-          </Link>
+          </Button>
+
           {token ? (
-            <button onClick={handleLogout} className="login-btn">
+            <Button fullWidth color="inherit" onClick={handleLogout}>
               Logout
-            </button>
+            </Button>
           ) : (
             <>
-              <Link to="/login" onClick={toggleMenu}>
-                <button className="login-btn">Login</button>
-              </Link>
-              <Link to="/signup" onClick={toggleMenu}>
-                <button className="login-btn">Sign Up</button>
-              </Link>
+              <Button
+                fullWidth
+                component={Link}
+                to="/login"
+                color="inherit"
+                onClick={toggleMenu}
+              >
+                Login
+              </Button>
+              <Button
+                fullWidth
+                component={Link}
+                to="/signup"
+                color="inherit"
+                onClick={toggleMenu}
+              >
+                Sign Up
+              </Button>
             </>
           )}
-        </div>
+        </Box>
       )}
-    </>
+    </AppBar>
   );
 };
 

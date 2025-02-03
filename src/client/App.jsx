@@ -7,6 +7,7 @@ import Nav from "./components/Nav";
 import Tricks from "./components/Tricks";
 import SignUp from "./components/SignUp";
 import Community from "./components/Community";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route path="/trick-bank" element={<Tricks />} />
           <Route path="/community" element={<Community />} />
         </Routes>
+        <Footer />
       </div>
     </>
   );
